@@ -7,17 +7,17 @@ import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
-import com.dev2.intern.vo.BoardVo;
+import com.dev2.intern.vo.BoardVO;
 
 @Repository
-public class TestDao {
+public class TestDAO {
 	
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
 	
 	public void test() {
 		String query = "SELECT * FROM board";
-		ArrayList<BoardVo> boardVo = (ArrayList<BoardVo>)jdbcTemplate.query(query, new BeanPropertyRowMapper<BoardVo>(BoardVo.class)); 
+		ArrayList<BoardVO> boardVo = (ArrayList<BoardVO>)jdbcTemplate.query(query, new BeanPropertyRowMapper<BoardVO>(BoardVO.class)); 
 
 		boardVo.stream()
 				.forEach(System.out::println);
