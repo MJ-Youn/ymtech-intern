@@ -4,31 +4,59 @@
 @import url("/css/footer.css");
 @import url("/css/board.css");
 
-#header {
-    background-color: skyblue;
-    position: fixed;
-    height: 86px;
-    max-height: 86px;
-    width: 100%;
-    left: 0px;
-    top: 0px;
-    z-index: 100;
+@media screen and (min-width: 1017px) {
+	#header {
+		background-color: rgba(255,255,255,0.8);
+	    position: fixed;
+	    height: 86px;
+	    max-height: 86px;
+	    width: 100%;
+	    left: 0px;
+	    top: 0px;
+	    padding: 0 10%;
+	    border-bottom: 2px solid RGB(220,0,0);
+	    box-shadow: 3px 3px 10px 0px silver;
+	    z-index: 100;
+	}
+	
+	.board {
+	    position: relative;
+	    width: calc(100% + 16px);
+	    min-height: 776px;
+	    top: 78px;
+	    left: -8px;
+	}
+	
+	#footer {
+	    background-color: gray;
+	    position: relative;
+	    width: calc(100% + 16px);
+	    left: -8px;
+	    bottom: -8px;
+	    height: 200px;
+	    margin-top: 70px;
+	}
 }
 
-#footer {
-    background-color: gray;
-    position: relative;
-    width: calc(100% + 16px);
-    left: -8px;
-    bottom: -8px;
-    height: 200px;
-    margin-top: 70px;
+@media screen and (max-width: 1500px) {
+	#header {
+		padding: 0;
+	}
 }
 
-.board {
-    position: relative;
-    width: calc(100% + 16px);
-    min-height: 776px;
-    top: 78px;
-    left: -8px;
+@media screen and (max-width: 1017px) {
+	#header {
+		background-color: white;
+		position: relative;
+		top: 0px;
+		left: 0px;
+	    height: 86px;
+	    max-height: 86px;
+	}
+	
+	.board {
+	}
+	
+	#footer {
+	}
 }
