@@ -1,0 +1,14 @@
+@CHARSET "UTF-8";
+
+.post_list {
+    position: absolute;
+    background-color: antiquewhite;
+    left: 50%;
+    top: 30px;
+    width: 1000px;
+    margin-left: -500px;
+}
+
+.post_list .number, .post_list .name, .post_list .date, .post_list .hit_count {
+	width: 120px;
+} 

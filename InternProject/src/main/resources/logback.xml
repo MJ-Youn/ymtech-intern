@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE xml>
+<configuration>
+	<!-- console로 log 남기기 -->
+	<appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+			<pattern>
+				▶ %-5level %d{HH:mm:ss.SSS} [%thread] %logger[%method:%line] - %msg%n
+			</pattern>
+		</encoder>
+	</appender>
+
+	<!-- file로 log 남기기 -->
+	<!-- <timestamp key="byDay" datePattern="yyyyMMdd" />
+	<appender name="file" class="ch.qos.logback.core.FileAppender">
+		<file>${HOME:-${USERPROFILE}}/logs/logback/log-${byDay}.log</file>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>${HOME:-${USERPROFILE}}/logs/logs/logback/log-${byDay}.log.zip
+			</fileNamePattern>
+			<maxHistory>3</maxHistory>
+		</rollingPolicy>
+		<encoder>
+			<pattern>
+				▶ %-5level %d{HH:mm:ss.SSS} [%thread] %logger[%method:%line] - %msg%n
+			</pattern>
+		</encoder>
+	</appender> -->
+
+	<!-- Logger -->
+	<root level="info">
+		<appender-ref ref="console" />
+		<!-- <appender-ref ref="file" /> -->
+	</root>
+</configuration>

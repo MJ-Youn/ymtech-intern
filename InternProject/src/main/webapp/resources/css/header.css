@@ -1,0 +1,14 @@
+@CHARSET "UTF-8";
+
+#title{
+	display: inline-block;
+}
+
+.board_list {
+	display: inline-block;
+	list-style-type: none;
+}
+
+.board_list li {
+	display: inline-block;
+}
