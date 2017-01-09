@@ -8,8 +8,11 @@ var ROOT = "/";
 var BOARD_ROOT = "/board/";
 var BOARD_WRITE_ROOT = "/write/";
 var POST_ROOT = "/post/";
+var PAGE_ROOT = "/page/";
 
 var NEW_BOARD_LIST_ELEMENT = "<li class='board_tab'></li>";
+var NEW_PAGINATION_LIST_ELEMENT = "<li class='page_number'></li>";
+var NEW_ACTIVE_PAGINATION_LIST_ELEMENT = "<li class='page_number active'></li>";
 
 var MODAL_CONFIRM_TITLE = "확인";
 var MODAL_CONFIRM_CONTENTS = "글을 게시하시겠습니까?";

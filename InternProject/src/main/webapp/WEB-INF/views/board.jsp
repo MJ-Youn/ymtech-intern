@@ -61,6 +61,13 @@
 						<td class="hit_count">3</td>
 					</tr>
 				</table>
+				<ul class="pagination">
+					<!-- <li class="page_number active">1</li>
+					<li class="page_number">2</li>
+					<li class="page_number">3</li>
+					<li class="page_number">4</li>
+					<li class="page_number">5</li> -->
+				</ul>
 			</div>
 		</div>
 		

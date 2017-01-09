@@ -9,49 +9,49 @@ import lombok.extern.slf4j.Slf4j;
 
 @Controller
 @Slf4j
-@RequestMapping(method=RequestMethod.GET)
+@RequestMapping(method = RequestMethod.GET)
 public class PageController {
 
-	@RequestMapping(value="/")
+	@RequestMapping(value = "/")
 	public String index() {
 		log.info("index page load");
-		
+
 		return "redirect:board/1";
 	}
-	
-	@RequestMapping(value="/header")
+
+	@RequestMapping(value = "/header")
 	public String header() {
 		log.info("header page load");
-		
+
 		return "header";
 	}
-	
-	@RequestMapping(value="/footer")
+
+	@RequestMapping(value = "/footer")
 	public String footer() {
 		log.info("footer page load");
-		
+
 		return "footer";
 	}
-	
-	@RequestMapping(value="/board/{boardNumber}")
+
+	@RequestMapping(value = "/board/{boardNumber}")
 	public String board(@PathVariable("boardNumber") String boardNumber) {
 		log.info(boardNumber + " board page load");
-		
+
 		return "board";
 	}
-	
-	@RequestMapping(value="/board/{boardNumber}/write")
+
+	@RequestMapping(value = "/board/{boardNumber}/write")
 	public String write(@PathVariable("boardNumber") String boardNumber) {
 		log.info(boardNumber + " board writing page load");
-		
+
 		return "write";
 	}
-	
-	@RequestMapping(value="/board/{boardNumber}/post/{postNumber}")
-	public String post(@PathVariable("boardNumber") String boardNumber, 
+
+	@RequestMapping(value = "/board/{boardNumber}/post/{postNumber}")
+	public String post(@PathVariable("boardNumber") String boardNumber,
 						@PathVariable("postNumber") String postNumber) {
 		log.info("view " + postNumber + "post on the " + boardNumber + "board");
-		
+
 		return "view";
 	}
 }

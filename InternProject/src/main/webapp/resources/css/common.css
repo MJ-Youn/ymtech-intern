@@ -74,14 +74,14 @@
 #body {
     position: relative;
     width: calc(100% + 16px);
-    min-height: 776px;
+    min-height: 774px;
     top: 78px;
     left: -8px;
 }
 
 #footer {
-    background-color: gray;
     position: relative;
+    border-top: 2px solid RGB(220,0,0);
     width: calc(100% + 16px);
     left: -8px;
     bottom: -8px;
