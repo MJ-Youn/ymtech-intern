@@ -7,7 +7,6 @@
 		<!-- Library include -->
 		<script type="text/javascript" src="/lib/js/jquery-3.1.1.min.js"></script>
 		<script type="text/javascript" src="/lib/js/jquery-ui.min.js"></script>
-		<script type="text/javascript" src="/lib/js/angular-1.6.1.min.js"></script>
 		
 		<link rel="stylesheet" type="text/css" href="/lib/css/jquery-ui.min.css" />
 		
@@ -16,10 +15,14 @@
 		
 		<title>main</title>
 	</head>
-	<body ng-app="app" ng-controller="main">
+	<body>
 	
-		<div id="header" ng-include="'/header'"></div>
-		
+		<div id="header">
+			<script type="text/javascript">
+				$("#header").load("/header");
+			</script>
+		</div>
+
 		<div class="board">
 			<div class="post_frame">
 				<h2>공지 사항</h2>
@@ -56,7 +59,11 @@
 			</div>
 		</div>
 		
-		<div id="footer" ng-include="'/footer'"></div>
+		<div id="footer">
+			<script type="text/javascript">
+				$("#footer").load("/footer");
+			</script>
+		</div>
 		
 	</body>
 </html>
