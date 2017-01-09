@@ -2,7 +2,31 @@
 
 @import url("/css/header.css");
 @import url("/css/footer.css");
-@import url("/css/board.css");
+
+@media screen and (min-width: 1017px) {
+	.post_frame {
+	    position: absolute;
+	    left: 50%;
+	    top: 30px;
+	    width: 1000px;
+	    margin-left: -500px;
+	}
+	
+	.post_list .number, .post_list .name, .post_list .date, .post_list .hit_count {
+		width: 120px;
+	}
+} 
+
+@media screen and (max-width: 1017px) {
+	.post_frame {
+	    margin: 8px 0 0 0;
+	    width: 100%;
+	}
+	
+	.post_list .number, .post_list .name, .post_list .date, .post_list .hit_count {
+		width: 10%;
+	}
+}
 
 #header {
     background-color: skyblue;
@@ -31,4 +55,50 @@
     min-height: 776px;
     top: 78px;
     left: -8px;
+}
+
+#post_write {
+    display: inline-block;
+    float: right;
+    margin: -35px 10px 0 0;
+    cursor: pointer;
+}
+
+.post_list {
+	width: 100%;
+	border-top: 2px solid #838e8e;
+	border-collapse:collapse;
+	color: #333;
+}
+
+.post_list th {
+    background: #f5f6f6;
+}
+
+.post_list td {
+	border-bottom: 1px solid #e1e1e1;
+}
+
+.post_list tr {
+	height: 30px;
+}
+
+.post_list .number, .post_list .name, .post_list .date, .post_list .hit_count {
+	text-align: center;
+}
+
+.pagination {
+	list-style-type: none;
+	text-align: center;
+	padding: 0;
+}
+
+.page_number {
+    display: inline-block;
+    width: 15px;
+    height: 22px;
+}
+
+.pagination .active {
+	font-weight: bold;
 }
