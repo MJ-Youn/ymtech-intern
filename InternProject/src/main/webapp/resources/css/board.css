@@ -25,6 +25,13 @@
 	}
 }
 
+#post_write {
+    display: inline-block;
+    float: right;
+    margin: -35px 10px 0 0;
+    cursor: pointer;
+}
+
 .post_list {
 	width: 100%;
 	border-top: 2px solid #838e8e;

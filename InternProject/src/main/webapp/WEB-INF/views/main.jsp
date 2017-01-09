@@ -16,6 +16,8 @@
 		<script type="text/javascript" src="/js/main.js"></script>
 		<link rel="stylesheet" type="text/css" href="/css/main.css" />
 		
+		<script type="text/javascript" src="/js/header.js"></script>
+		
 		<title>main</title>
 	</head>
 	<body ng-app="app" ng-controller="main">

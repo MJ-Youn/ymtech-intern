@@ -4,12 +4,6 @@ $(document).ready(function(){
 	$("#title").click(function(){
 		$(location).attr('href', '/');
 	});
-	
-	$(".board_list li").click(function(){
-		var boardName = $(this).html();
-		var boardId = getBoardId(boardName);
-		console.log(boardName + " " + boardId);
-	});
 });
 
 function getBoardId(name) {
@@ -19,3 +13,7 @@ function getBoardId(name) {
 		}
 	}
 }
+
+app.controller("header", function($scope){
+	
+});

@@ -3,6 +3,7 @@
 
 <div class="post_frame">
 	<h2 class="board_name" ng-bind="boardName"></h2>
+	<div id="post_write">글쓰기</div>
 	<table class="post_list">
 		<tr>
 			<th class="number">번호</th>
