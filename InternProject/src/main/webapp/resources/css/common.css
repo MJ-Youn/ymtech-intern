@@ -85,6 +85,15 @@
     width: calc(100% + 16px);
     left: -8px;
     bottom: -8px;
-    height: 200px;
-    margin-top: 70px;
+    height: 150px;
+    margin-top: 120px;
+}
+
+#footer_logo {
+    background-image: url(/img/logo.png);
+    background-size: cover;
+    display: inline-block;
+    width: 278px;
+    height: 150px;
+    margin-left: 100px;
 }

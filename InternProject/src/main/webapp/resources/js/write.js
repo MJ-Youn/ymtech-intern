@@ -8,7 +8,7 @@ $(document).ready(function() {
 	});
 
 	$("#cancel").click(function() {
-		fillModalData(MODAL_TITLE_CANCEL, MODAL_CONTENTS_CANCEL);
+		fillModalData(MODAL_CANCEL_TITLE, MODAL_CANCEL_CONTENTS);
 		$("#dialog").dialog({
 			resizable : false,
 			height : "auto",
@@ -30,6 +30,24 @@ $(document).ready(function() {
 	});
 
 	$("#confirm").click(function() {
-
+		fillModalData(MODAL_CONFIRM_TITLE, MODAL_CONFIRM_CONTENTS);
+		$("#dialog").dialog({
+			resizable : false,
+			height : "auto",
+			width : 400,
+			modal : true,
+			buttons : [ {
+				text : MODAL_BUTTON_OK,
+				click : function() {
+					$(this).dialog("close");
+					$(location).attr("href", BOARD_ROOT + CURRENT_BOARD_ID);
+				}
+			}, {
+				text : MODAL_BUTTON_CANCEL,
+				click : function() {
+					$(this).dialog("close");
+				}
+			} ]
+		});
 	})
 });

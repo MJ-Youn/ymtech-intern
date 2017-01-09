@@ -46,4 +46,12 @@ public class PageController {
 		
 		return "write";
 	}
+	
+	@RequestMapping(value="/board/{boardNumber}/post/{postNumber}")
+	public String post(@PathVariable("boardNumber") String boardNumber, 
+						@PathVariable("postNumber") String postNumber) {
+		log.info("view " + postNumber + "post on the " + boardNumber + "board");
+		
+		return "view";
+	}
 }
