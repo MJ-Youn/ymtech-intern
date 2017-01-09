@@ -10,8 +10,8 @@
 		
 		<link rel="stylesheet" type="text/css" href="/lib/css/jquery-ui.min.css" />
 		
-		<script type="text/javascript" src="/js/main.js"></script>
-		<link rel="stylesheet" type="text/css" href="/css/main.css" />
+		<script type="text/javascript" src="/js/board.js"></script>
+		<link rel="stylesheet" type="text/css" href="/css/board.css" />
 		
 		<title>main</title>
 	</head>

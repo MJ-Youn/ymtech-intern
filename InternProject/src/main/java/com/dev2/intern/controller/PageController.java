@@ -15,7 +15,7 @@ public class PageController {
 	public String index() {
 		log.info("index page load");
 		
-		return "main";
+		return "redirect:board/1";
 	}
 	
 	@RequestMapping(value="/header", method=RequestMethod.GET)
