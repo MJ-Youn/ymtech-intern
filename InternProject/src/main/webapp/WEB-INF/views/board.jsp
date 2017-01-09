@@ -10,6 +10,10 @@
 		
 		<link rel="stylesheet" type="text/css" href="/lib/css/jquery-ui.min.css" />
 		
+		<!-- Common file include -->
+		<script type="text/javascript" src="/js/common.js"></script>
+		<link rel="stylesheet" type="text/css" href="/css/common.css" />
+		
 		<script type="text/javascript" src="/js/board.js"></script>
 		<link rel="stylesheet" type="text/css" href="/css/board.css" />
 		
@@ -23,16 +27,17 @@
 			</script>
 		</div>
 
-		<div class="board">
-			<div class="post_frame">
-				<h2>공지 사항</h2>
+		<div id="body">
+			<div class="main_frame">
+				<h2 id="board_title"></h2>
+				<div id="post_write"></div>
 				<table class="post_list">
 					<tr>
-						<th class="number">Number</th>
-						<th class="title">Title</th>
-						<th class="name">Writer</th>
-						<th class="date">Date</th>
-						<th class="hit_count">Hit Count</th>
+						<th class="number">번호</th>
+						<th class="title">제목</th>
+						<th class="name">글쓴이</th>
+						<th class="date">날짜</th>
+						<th class="hit_count">조회수</th>
 					</tr>
 					<tr>
 						<td class="number">1</td>

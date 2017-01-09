@@ -1,10 +1,7 @@
 @CHARSET "UTF-8";
 
-@import url("/css/header.css");
-@import url("/css/footer.css");
-
 @media screen and (min-width: 1017px) {
-	.post_frame {
+	.main_frame {
 	    position: absolute;
 	    left: 50%;
 	    top: 30px;
@@ -18,7 +15,7 @@
 } 
 
 @media screen and (max-width: 1017px) {
-	.post_frame {
+	.main_frame {
 	    margin: 8px 0 0 0;
 	    width: 100%;
 	}
@@ -28,39 +25,14 @@
 	}
 }
 
-#header {
-    background-color: skyblue;
-    position: fixed;
-    height: 86px;
-    max-height: 86px;
-    width: 100%;
-    left: 0px;
-    top: 0px;
-    z-index: 100;
-}
-
-#footer {
-    background-color: gray;
-    position: relative;
-    width: calc(100% + 16px);
-    left: -8px;
-    bottom: -8px;
-    height: 200px;
-    margin-top: 70px;
-}
-
-.board {
-    position: relative;
-    width: calc(100% + 16px);
-    min-height: 776px;
-    top: 78px;
-    left: -8px;
-}
-
 #post_write {
     display: inline-block;
     float: right;
-    margin: -35px 10px 0 0;
+    background-image: url(/img/writing.ico);
+    background-size: cover;
+    margin: -40px 5px 0 0;
+    width: 40px;
+    height: 40px;
     cursor: pointer;
 }
 

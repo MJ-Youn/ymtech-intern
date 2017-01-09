@@ -4,9 +4,5 @@
 <h1 id="title">MJ</h1>
 
 <ul class="board_list">
-	<li>1번</li>
-	<li>2번</li>
-	<li>3번</li>
-	<li>4번</li>
 </ul>
 		
