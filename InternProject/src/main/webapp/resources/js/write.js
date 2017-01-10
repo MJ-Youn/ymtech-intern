@@ -6,7 +6,10 @@ $(document).ready(function() {
 		resize_enabled : false,
 		enterMode : CKEDITOR.ENTER_BR
 	});
-
+	
+	/*
+	 * Modal 
+	 */
 	$("#cancel").click(function() {
 		fillModalData(MODAL_CANCEL_TITLE, MODAL_CANCEL_CONTENTS);
 		$("#dialog").dialog({
@@ -40,7 +43,32 @@ $(document).ready(function() {
 				text : MODAL_BUTTON_OK,
 				click : function() {
 					$(this).dialog("close");
-					$(location).attr("href", BOARD_ROOT + CURRENT_BOARD_ID + PAGE_ROOT + 1);
+					
+					var title = defendXSS($("#post_title").val());
+					var contents = CKEDITOR.instances['post_contents'].getData();
+					var userId = 1;
+					
+					$.ajax({
+						type: "POST",
+						contentType : "application/json; charset=UTF-8",
+						url: POST_ROOT + BOARD_WRITE_ROOT,
+						data: JSON.stringify({
+							"boardId" : CURRENT_BOARD_ID,
+							"userId": userId,
+							"title": title,
+							"contents": contents
+						}),
+						success: function(data) {
+							if (data === "200") {
+								$(location).attr("href", BOARD_ROOT + CURRENT_BOARD_ID + PAGE_ROOT + 1);
+							} else {
+								alert("Error");
+							}
+						},
+						error:function(request, status, error){
+							alert("code:" + request.status + "\nmessage:" + request.responseText + "\nerror:" + error);
+				        }
+					});
 				}
 			}, {
 				text : MODAL_BUTTON_CANCEL,

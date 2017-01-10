@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.dev2.intern.dao.PostDAO;
 import com.dev2.intern.vo.PostVO;
+import com.dev2.intern.vo.WritePostVO;
 
 @Service
 public class PostService {
@@ -25,5 +26,9 @@ public class PostService {
 	
 	public PostVO getPostById(String postId) {
 		return postDAO.getPostById(postId);
+	}
+	
+	public int postPost(WritePostVO writePostVO) {
+		return postDAO.postPost(writePostVO);
 	}
 }

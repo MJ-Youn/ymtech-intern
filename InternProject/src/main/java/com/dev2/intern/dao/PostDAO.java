@@ -13,6 +13,7 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 import com.dev2.intern.vo.PostVO;
+import com.dev2.intern.vo.WritePostVO;
 
 @Repository
 public class PostDAO {
@@ -77,5 +78,22 @@ public class PostDAO {
 		String sql = "UPDATE post SET hit_count = hit_count + 1 WHERE id = ?";
 		
 		jdbcTemplate.update(sql, postId);
+	}
+	
+	public int postPost(WritePostVO writePostVO) {
+		String sql = "INSERT INTO post(user_id, post_number, board_id, title, contents)"
+						+ "VALUES(?, ?, ?, ?,?)";
+		int postNumber = calculateLastPostNumber(writePostVO.getBoardId());
+		
+		return jdbcTemplate.update(sql, writePostVO.getUserId(), postNumber, writePostVO.getBoardId(), writePostVO.getTitle(), writePostVO.getContents());
+	}
+	
+	private int calculateLastPostNumber(int board_id) {
+		String sql = "SELECT MAX(post_number) FROM post WHERE board_id = ?";
+		try {
+			return jdbcTemplate.queryForObject(sql, Integer.class, board_id) + 1;
+		} catch (NullPointerException npe) {
+			return 1;
+		}
 	}
 }

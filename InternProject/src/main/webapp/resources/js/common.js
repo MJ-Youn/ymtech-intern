@@ -26,10 +26,19 @@ function fillModalData(title, contents) {
 	$("#dialog_contents").html(contents);
 }
 
-function isSuccessful(header) {
-	if (header.resultCode === 200) {
-		return true;
-	} else {
-		return false;
-	}
+//function isSuccessful(header) {
+//	if (header.resultCode === 200) {
+//		return true;
+//	} else {
+//		return false;
+//	}
+//}
+
+function defendXSS(str) {
+	str = str.replace(/\</g, "&lt;");
+	str = str.replace(/\>/g, "&gt;");
+	str = str.replace(/\"/g, "&quot;");
+	str = str.replace(/\'/g, "&#39;");
+	
+	return str;
 }
