@@ -1,4 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE>
 <html lang="ko">
 	<head>
@@ -16,8 +17,8 @@
 		<script type="text/javascript" src="/js/common.js"></script>
 		<link rel="stylesheet" type="text/css" href="/css/common.css" />
 		
-		<script type="text/javascript" src="/js/view.js"></script>
-		<link rel="stylesheet" type="text/css" href="/css/view.css" />
+		<script type="text/javascript" src="/js/post.js"></script>
+		<link rel="stylesheet" type="text/css" href="/css/post.css" />
 		
 		<title>main</title>
 	</head>
@@ -34,20 +35,20 @@
 				<h2 id="board_title"></h2>
 				<table id="post_table">
 					<tr>
-						<th colspan="6" id="post_title">이건 첫번째 글입니다. 아닐수도 있구요.</th>
+						<th colspan="6" id="post_title">${post.title }</th>
 					</tr>
 					<tr>
 						<td>작성자</td>
-						<td id="writer_name">홍길동</td>
+						<td id="writer_name">${post.userName }</td>
 						<td>날짜</td>
-						<td id="create_date">2017.01.01</td>
+						<td id="create_date">${post.modifyDate }</td>
 						<td>조회수</td>
-						<td id="hit_count">231234</td>
+						<td id="hit_count">${post.hitCount }</td>
 					</tr>
 					<tr>
 					</tr>
 					<tr>
-						<td colspan="6" id="post_contents">블라블라블라<br/>asdczx</td>
+						<td colspan="6" id="post_contents">${post.contents }</td>
 					</tr>
 				</table>
 				<div id="comment_list">

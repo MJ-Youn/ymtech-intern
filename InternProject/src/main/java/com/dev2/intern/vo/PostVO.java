@@ -11,6 +11,7 @@ import lombok.experimental.Accessors;
 public class PostVO {
 	private int id;
 	private int userId;
+	private String userName;
 	private int postNumber;
 	private String title;
 	private String contents;

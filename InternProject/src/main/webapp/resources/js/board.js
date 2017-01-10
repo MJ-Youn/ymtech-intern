@@ -1,24 +1,20 @@
 "use strict";
 
-var currentPage = Number(1);
-var pageCount = 1;
+var currentPage;
+var pageCount;
 
 $(document).ready(function() {
+	pageCount = Number($(".pagination").attr("id").match(/[0-9]/g));
+	currentPage = Number($(location).attr("href").split(PAGE_ROOT)[1]);
+	createPagination();
+	
 	$("#post_write").click(function() {
 		$(location).attr("href", BOARD_ROOT + CURRENT_BOARD_ID + BOARD_WRITE_ROOT);
 	});
 	
-	$.ajax({
-		url: BOARD_ROOT + CURRENT_BOARD_ID + PAGE_ROOT,
-		type: "GET",
-		dataType: "json",
-		success: function(data) {
-			pageCount = Number(data.body.pageCount); 
-			createPagination();
-		},
-		error:function(request,status,error){
-			alert("code: " + request.status + "\nmessage: " + request.responseText + "\nerror: " + error);
-		}
+	$(".post_list .title").click(function() {
+		var postId = Number($(this).attr("id").match(/[0-9]/g));
+		$(location).attr("href", BOARD_ROOT + CURRENT_BOARD_ID + POST_ROOT + postId);
 	});
 });
 

@@ -18,7 +18,7 @@ $(document).ready(function() {
 				text : MODAL_BUTTON_OK,
 				click : function() {
 					$(this).dialog("close");
-					$(location).attr("href", BOARD_ROOT + CURRENT_BOARD_ID);
+					$(location).attr("href", BOARD_ROOT + CURRENT_BOARD_ID + PAGE_ROOT + 1);
 				}
 			}, {
 				text : MODAL_BUTTON_CANCEL,
@@ -40,7 +40,7 @@ $(document).ready(function() {
 				text : MODAL_BUTTON_OK,
 				click : function() {
 					$(this).dialog("close");
-					$(location).attr("href", BOARD_ROOT + CURRENT_BOARD_ID);
+					$(location).attr("href", BOARD_ROOT + CURRENT_BOARD_ID + PAGE_ROOT + 1);
 				}
 			}, {
 				text : MODAL_BUTTON_CANCEL,

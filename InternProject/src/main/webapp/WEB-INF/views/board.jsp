@@ -1,4 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ page import="com.dev2.intern.vo.PostVO"%>
 <!DOCTYPE>
 <html lang="ko">
 	<head>
@@ -39,34 +42,17 @@
 						<th class="date">날짜</th>
 						<th class="hit_count">조회수</th>
 					</tr>
-					<tr>
-						<td class="number">1</td>
-						<td class="title">1</td>
-						<td class="name">1</td>
-						<td class="date">1</td>
-						<td class="hit_count">1</td>
-					</tr>
-					<tr>
-						<td class="number">2</td>
-						<td class="title">2</td>
-						<td class="name">2</td>
-						<td class="date">2</td>
-						<td class="hit_count">2</td>
-					</tr>
-					<tr>
-						<td class="number">3</td>
-						<td class="title">3</td>
-						<td class="name">3</td>
-						<td class="date">3</td>
-						<td class="hit_count">3</td>
-					</tr>
+					<c:forEach var="post" items="${postList }">
+						<tr>
+							<td class="number">${post.postNumber }</td>
+							<td class="title" id="post${post.id }">${post.title }</td>
+							<td class="name">${post.userName }</td>
+							<td class="date"><fmt:formatDate pattern="yyyy-MM-dd" value="${post.modifyDate }" /></td>
+							<td class="hit_count">${post.hitCount }</td>
+						</tr>
+					</c:forEach>
 				</table>
-				<ul class="pagination">
-					<!-- <li class="page_number active">1</li>
-					<li class="page_number">2</li>
-					<li class="page_number">3</li>
-					<li class="page_number">4</li>
-					<li class="page_number">5</li> -->
+				<ul class="pagination" id="pagination${pageCount.pageCount}">
 				</ul>
 			</div>
 		</div>

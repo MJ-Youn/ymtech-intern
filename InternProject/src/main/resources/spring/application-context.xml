@@ -6,7 +6,7 @@
 	<!-- Root Context: defines shared resources visible to all other web components -->
 	<bean name="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
 		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
-		<property name="url" value="jdbc:mysql://localhost:3306/intern" />
+		<property name="url" value="jdbc:mysql://localhost:3306/intern?useSSL=false" />
 		<property name="username" value="intern" />
 		<property name="password" value="intern" />
 	</bean>

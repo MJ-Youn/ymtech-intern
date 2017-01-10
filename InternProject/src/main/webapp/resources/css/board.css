@@ -59,6 +59,10 @@
 	text-align: center;
 }
 
+.post_list .title {
+	cursor: pointer;
+}
+
 .pagination {
 	list-style-type: none;
 	text-align: center;

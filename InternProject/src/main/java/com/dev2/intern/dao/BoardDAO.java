@@ -1,45 +1,33 @@
 package com.dev2.intern.dao;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
-import com.dev2.intern.vo.PostVO;
+import com.dev2.intern.vo.BoardVO;
 
 @Repository
 public class BoardDAO {
-
-	private final int LIMIT_POST_COUNT_BY_PAGE = 15;
 	
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
 
-	public Map<Object, Object> getPageCount(String boardNumber) {
-		String sql = "SELECT COUNT(*) FROM post WHERE board_id = " + boardNumber;
+	public int calculateBoardId() {
+		String sql = "SELECT MIN(id) FROM board";
 		
-		int postCount = jdbcTemplate.queryForObject(sql, Integer.class);
-		int pageCount = (postCount-1) / LIMIT_POST_COUNT_BY_PAGE + 1;
+		int firstBoardId = jdbcTemplate.queryForObject(sql, Integer.class);
 		
-		Map<Object, Object> mapPageCount = new HashMap<Object, Object>();
-		
-		mapPageCount.put("pageCount", pageCount);
-		
-		return mapPageCount;
+		return firstBoardId;
 	}
 	
-	public ArrayList<PostVO> getPostList(String boardNumber, String pageNumber) {
-		int startIndex = (Integer.parseInt(pageNumber)-1) * LIMIT_POST_COUNT_BY_PAGE;
-		String sql = "SELECT * FROM post "
-						+ "WHERE board_id = " + boardNumber
-						+ " LIMIT " + startIndex + ", " + LIMIT_POST_COUNT_BY_PAGE;
-		ArrayList<PostVO> postList = (ArrayList<PostVO>)jdbcTemplate.query(sql, new BeanPropertyRowMapper<PostVO>(PostVO.class));
+	public ArrayList<BoardVO> listUpBoard() {
+		String sql = "SELECT * FROM board ORDER BY id";
 		
-		return postList;
+		ArrayList<BoardVO> boardList = (ArrayList<BoardVO>)jdbcTemplate.query(sql, new BeanPropertyRowMapper<BoardVO>(BoardVO.class));
+		
+		return boardList;
 	}
-	
 }

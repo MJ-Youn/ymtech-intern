@@ -1,13 +1,12 @@
 package com.dev2.intern.service;
 
 import java.util.ArrayList;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.dev2.intern.dao.BoardDAO;
-import com.dev2.intern.vo.PostVO;
+import com.dev2.intern.vo.BoardVO;
 
 @Service
 public class BoardService {
@@ -15,16 +14,11 @@ public class BoardService {
 	@Autowired
 	private BoardDAO boardDAO;
 	
-	public Map<Object, Object> getPageCount(String boardNumber) {
-		Map<Object, Object> pageCount = boardDAO.getPageCount(boardNumber);
-		
-		return pageCount;
+	public int calculateBoardId() {
+		return boardDAO.calculateBoardId();
 	}
 	
-	public ArrayList<PostVO> getPostList(String boardNumber, String pageNumber) {
-		ArrayList<PostVO> postList = boardDAO.getPostList(boardNumber, pageNumber);
-		
-		return postList;
+	public ArrayList<BoardVO> listUpBoard() {
+		return boardDAO.listUpBoard();
 	}
-	
 }

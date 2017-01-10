@@ -3,7 +3,6 @@
 var CURRENT_BOARD_ID = "";
 var CURRENT_BOARD_NAME = "";
 
-var BOARD_LIST = [{id: 1, name: "공지사항"},{id: 2, name: "자유 게시판"}];
 var ROOT = "/";
 var BOARD_ROOT = "/board/";
 var BOARD_WRITE_ROOT = "/write/";
@@ -22,29 +21,15 @@ var MODAL_CANCEL_CONTENTS = "작성했던 내용은 저장되지 않습니다. �
 var MODAL_BUTTON_OK = "확인";
 var MODAL_BUTTON_CANCEL = "취소";
 
-$(document).ready(function() {
-	CURRENT_BOARD_ID = $(location).attr("href").split(BOARD_ROOT)[1].split("/")[0];
-	CURRENT_BOARD_NAME = getBoardName(CURRENT_BOARD_ID);
-	$("#board_title").html(CURRENT_BOARD_NAME);
-});
-
-function getBoardId(name) {
-	for (var i = 0 ; i < BOARD_LIST.length ; i++) {
-		if (BOARD_LIST[i].name === name) {
-			return BOARD_LIST[i].id;
-		}
-	}
-}
-
-function getBoardName(id) {
-	for (var i = 0 ; i < BOARD_LIST.length ; i++) {
-		if (BOARD_LIST[i].id === Number(id)) {
-			return BOARD_LIST[i].name;
-		}
-	}
-}
-
 function fillModalData(title, contents) {
 	$("#dialog").attr("title", title);
 	$("#dialog_contents").html(contents);
+}
+
+function isSuccessful(header) {
+	if (header.resultCode === 200) {
+		return true;
+	} else {
+		return false;
+	}
 }
