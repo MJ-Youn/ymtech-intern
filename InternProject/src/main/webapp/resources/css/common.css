@@ -14,7 +14,7 @@
 
 @media screen and (min-width: 1017px) {
 	.main_frame {
-	    position: absolute;
+	    position: relative;
 	    left: 50%;
 	    top: 30px;
 	    width: 1000px;
