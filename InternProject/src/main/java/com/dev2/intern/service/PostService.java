@@ -31,4 +31,8 @@ public class PostService {
 	public int postPost(WritePostVO writePostVO) {
 		return postDAO.postPost(writePostVO);
 	}
+	
+	public int deletePost(int postId) {
+		return postDAO.deletePost(postId);
+	}
 }

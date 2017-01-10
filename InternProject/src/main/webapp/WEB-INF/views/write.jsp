@@ -22,7 +22,6 @@
 		<title>main</title>
 	</head>
 	<body>
-	
 		<div id="header">
 			<script type="text/javascript">
 				$("#header").load("/header");
@@ -49,15 +48,10 @@
 			</div>
 		</div>
 		
-		<div id="dialog" title="">
-			<p id="dialog_contents"></p>
-		</div>
-		
 		<div id="footer">
 			<script type="text/javascript">
 				$("#footer").load("/footer");
 			</script>
 		</div>
-		
 	</body>
 </html>

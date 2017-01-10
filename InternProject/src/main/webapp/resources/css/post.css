@@ -41,6 +41,30 @@
 	padding: 30px 10px;
 }
 
+#post_button_frame {
+	height: 60px;
+	text-align: center;
+}
+
+.post_button {
+    display: inline-block;
+    width: 30px;
+    height: 30px;
+	margin: 20px 10px 0;
+    background: white;
+    cursor: pointer;
+}
+
+#modify_post {
+    background-image: url("/img/modify.ico");
+    background-size: cover;
+}
+
+#delete_post {
+    background-image: url("/img/delete.ico");
+    background-size: cover;
+}
+
 #comment_list {
 	width: 94%;
 	padding: 0 3%;

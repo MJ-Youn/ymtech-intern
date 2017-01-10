@@ -10,4 +10,7 @@
 		<li class="board_tab" id="board${board.id}">${board.name}</li>
 	</c:forEach>
 </ul>
-		
+
+<div id="dialog" title="">
+	<p id="dialog_contents"></p>
+</div>

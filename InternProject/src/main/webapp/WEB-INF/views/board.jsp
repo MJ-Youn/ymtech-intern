@@ -23,7 +23,6 @@
 		<title>main</title>
 	</head>
 	<body>
-	
 		<div id="header">
 			<script type="text/javascript">
 				$("#header").load("/header");
@@ -62,6 +61,5 @@
 				$("#footer").load("/footer");
 			</script>
 		</div>
-		
 	</body>
 </html>

@@ -9,7 +9,7 @@ $(document).ready(function() {
 	createPagination();
 	
 	$("#post_write").click(function() {
-		$(location).attr("href", BOARD_ROOT + CURRENT_BOARD_ID + BOARD_WRITE_ROOT);
+		$(location).attr("href", BOARD_ROOT + CURRENT_BOARD_ID + WRITE_ROOT);
 	});
 	
 	$(".post_list .title").click(function() {

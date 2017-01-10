@@ -1,5 +1,7 @@
 package com.dev2.intern.controller;
 
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -66,8 +68,18 @@ public class ModelAndViewController {
 
 		return "write";
 	}
+
+	@RequestMapping(value = "/board/{boardNumber}/post/{postId}", method = RequestMethod.GET)
+	public ModelAndView post(@PathVariable("boardNumber") String boardNumber,
+							@PathVariable("postId") String postId) {
+		log.info("view " + postId + "post");
+		ModelAndView modelAndView = new ModelAndView("post");
+		modelAndView.addObject("post", postService.getPostById(postId));
+		
+		return modelAndView;
+	}
 	
-	@RequestMapping(value = "/post/write", method = RequestMethod.POST)
+	@RequestMapping(value = "/post", method = RequestMethod.POST)
 	@ResponseBody
 	public String writePost(@RequestBody WritePostVO writePostVO) {
 		log.info(writePostVO.getBoardId() + " board's new posting");
@@ -79,14 +91,18 @@ public class ModelAndViewController {
 			return "400";
 		}
 	}
+	
+	@RequestMapping(value = "/post", method = RequestMethod.DELETE)
+	@ResponseBody
+	public String DeletePost(@RequestBody Map<Object, Object> body) {
+		int postNumber = (Integer)body.get("postNumber");
+		log.info(postNumber + " Post is deleted");
+		int isSuccessful = postService.deletePost(postNumber);
 
-	@RequestMapping(value = "/board/{boardNumber}/post/{postId}", method = RequestMethod.GET)
-	public ModelAndView post(@PathVariable("boardNumber") String boardNumber,
-							@PathVariable("postId") String postId) {
-		log.info("view " + postId + "post");
-		ModelAndView modelAndView = new ModelAndView("post");
-		modelAndView.addObject("post", postService.getPostById(postId));
-		
-		return modelAndView;
+		if (isSuccessful == 1) {
+			return "200";
+		} else {
+			return "400";
+		}
 	}
 }

@@ -96,4 +96,10 @@ public class PostDAO {
 			return 1;
 		}
 	}
+	
+	public int deletePost(int postId) {
+		String sql = "DELETE FROM post WHERE id = ?";
+		
+		return jdbcTemplate.update(sql, postId);
+	}
 }

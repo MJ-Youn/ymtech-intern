@@ -23,7 +23,6 @@
 		<title>main</title>
 	</head>
 	<body>
-	
 		<div id="header">
 			<script type="text/javascript">
 				$("#header").load("/header");
@@ -51,6 +50,10 @@
 						<td colspan="6" id="post_contents">${post.contents }</td>
 					</tr>
 				</table>
+				<div id="post_button_frame">
+					<div id="modify_post" class="post_button"></div>
+					<div id="delete_post" class="post_button"></div>
+				</div>
 				<div id="comment_list">
 					<div class="comment_depth1"><div class="comment_user">admin</div><div class="comment_date">2017-01-01</div><div class="comment_contents">absdqweq</div></div>
 					<div class="comment_depth2"><div class="comment_user">admin</div><div class="comment_date">2017-01-01</div><div class="comment_contents">absdqweq</div></div>
@@ -66,6 +69,5 @@
 				$("#footer").load("/footer");
 			</script>
 		</div>
-		
 	</body>
 </html>
