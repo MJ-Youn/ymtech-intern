@@ -55,6 +55,52 @@ CREATE TABLE file(
     FOREIGN KEY(post_id) REFERENCES post(id)
 );
 
+# deleted table
+CREATE TABLE trash_user (
+	id INT NOT NULL AUTO_INCREMENT,			# index
+    email VARCHAR(255) NOT NULL,			# login identification
+    name VARCHAR(20) NOT NULL,				# user name
+    password VARCHAR(41) NOT NULL,			# user password ( SHA-1 length = 41 )
+    level INT(1) NOT NULL DEFAULT 0,		# user level (admin is 10)
+    PRIMARY KEY(id)
+);
+
+CREATE TABLE trash_board(
+	id INT,
+    name VARCHAR(20)
+);
+
+CREATE TABLE trash_post(
+	id INT,
+    user_id INT,
+    post_number INT,
+    board_id INT,
+    title VARCHAR(50),
+    contents TEXT,
+    hit_count INT,
+    create_date TIMESTAMP,
+    modify_date TIMESTAMP
+);
+
+CREATE TABLE trash_comment(
+	id INT,
+    parent_comment_id INT,
+    post_id INT,
+    user_id INT,
+    contents TEXT,
+    create_date TIMESTAMP,
+    modify_date TIMESTAMP
+);
+
+CREATE TABLE trash_file(
+	id INT,
+    post_id INT,
+    location VARCHAR(500),
+    original_file_name VARCHAR(255),
+    size INT,
+    type VARCHAR(10)
+);
+
 drop table file;
 drop table comment;
 drop table post;

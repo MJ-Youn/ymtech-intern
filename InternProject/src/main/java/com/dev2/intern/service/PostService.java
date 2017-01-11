@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.dev2.intern.dao.PostDAO;
+import com.dev2.intern.vo.ModifyPostVO;
 import com.dev2.intern.vo.PostVO;
 import com.dev2.intern.vo.WritePostVO;
 
@@ -34,5 +35,9 @@ public class PostService {
 	
 	public int deletePost(int postId) {
 		return postDAO.deletePost(postId);
+	}
+	
+	public int modifyPost(ModifyPostVO modifyPostVO) {
+		return postDAO.modifyPost(modifyPostVO);
 	}
 }

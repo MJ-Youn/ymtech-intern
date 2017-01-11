@@ -14,7 +14,7 @@ $(document).ready(function() {
 	});
 
 	$(".board_tab").click(function() {
-		CURRENT_BOARD_ID = Number($(this).attr("id").match(/[0-9]/g));
+		CURRENT_BOARD_ID = Number($(this).attr("id").match(/[0-9]/g).join(""));
 		$(location).attr("href", BOARD_ROOT + CURRENT_BOARD_ID + PAGE_ROOT + "1");
 	});
 });

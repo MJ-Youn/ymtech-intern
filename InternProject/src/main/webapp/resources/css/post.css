@@ -147,3 +147,28 @@
 	word-break: break-all;
    	padding: 0 10px 5px;
 }
+
+#comment_form {
+    height: 75px;
+    padding: 0 20px;
+}
+
+#comment_content {
+    width: 89%;
+    height: 100%;
+    margin-left: 30px;
+    padding: 10px;
+    font-size: 14px;
+    resize: none;
+}
+
+#comment_button {
+    display: inline-block;
+    background-image: url(/img/comments.ico);
+    background-size: cover;
+    width: 40px;
+    height: 50%;
+    margin: 18px 10px;
+    opacity: 0.8;
+    cursor: pointer;
+}

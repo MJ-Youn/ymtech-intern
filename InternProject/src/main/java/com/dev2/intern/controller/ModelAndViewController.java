@@ -12,7 +12,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.dev2.intern.service.BoardService;
+import com.dev2.intern.service.CommentService;
 import com.dev2.intern.service.PostService;
+import com.dev2.intern.vo.ModifyPostVO;
 import com.dev2.intern.vo.WritePostVO;
 
 import lombok.extern.slf4j.Slf4j;
@@ -26,6 +28,9 @@ public class ModelAndViewController {
 	
 	@Autowired
 	private PostService postService;
+	
+	@Autowired
+	private CommentService commentService;
 	
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String index() {
@@ -72,12 +77,24 @@ public class ModelAndViewController {
 	@RequestMapping(value = "/board/{boardNumber}/post/{postId}", method = RequestMethod.GET)
 	public ModelAndView post(@PathVariable("boardNumber") String boardNumber,
 							@PathVariable("postId") String postId) {
-		log.info("view " + postId + "post");
+		log.info("view " + postId + " post");
 		ModelAndView modelAndView = new ModelAndView("post");
+		modelAndView.addObject("post", postService.getPostById(postId));
+		modelAndView.addObject("comments", commentService.listUpComment(postId));
+		
+		return modelAndView;
+	}
+	
+	@RequestMapping(value = "/board/{boardNumber}/post/{postId}/modify", method = RequestMethod.GET)
+	public ModelAndView modify(@PathVariable("boardNumber") String boardNumber,
+						@PathVariable("postId") String postId) {
+		log.info("modify " + postId + " post");
+		ModelAndView modelAndView = new ModelAndView("write");
 		modelAndView.addObject("post", postService.getPostById(postId));
 		
 		return modelAndView;
 	}
+	
 	
 	@RequestMapping(value = "/post", method = RequestMethod.POST)
 	@ResponseBody
@@ -102,6 +119,21 @@ public class ModelAndViewController {
 		if (isSuccessful == 1) {
 			return "200";
 		} else {
+			return "400";
+		}
+	}
+	
+	@RequestMapping(value = "/post", method = RequestMethod.PATCH)
+	@ResponseBody
+	public String ModifyPost(@RequestBody ModifyPostVO modifyPostVO) {
+		log.info(modifyPostVO.getId() + " post is modify");
+		int isSuccessful = postService.modifyPost(modifyPostVO);
+		
+		if (isSuccessful == 1) {
+			log.info("print 200");
+			return "200";
+		} else {
+			log.info("print 400");
 			return "400";
 		}
 	}

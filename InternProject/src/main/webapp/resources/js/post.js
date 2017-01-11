@@ -2,7 +2,8 @@
 
 $(document).ready(function() {
 	$("#modify_post").click(function() {
-		
+		var currentUrl = $(location).attr("href");
+		$(location).attr("href", currentUrl + MODIFY_ROOT);
 	});
 	
 	$("#delete_post").click(function() {
@@ -51,5 +52,5 @@ function deletePost() {
 }
 
 function extractPostId() {
-	return Number($(location).attr("href").split(POST_ROOT)[1].match(/[0-9]/g));
+	return Number($(location).attr("href").split(POST_ROOT)[1].match(/[0-9]/g).join(""));
 }

@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE>
 <html lang="ko">
 	<head>
@@ -55,11 +56,17 @@
 					<div id="delete_post" class="post_button"></div>
 				</div>
 				<div id="comment_list">
-					<div class="comment_depth1"><div class="comment_user">admin</div><div class="comment_date">2017-01-01</div><div class="comment_contents">absdqweq</div></div>
-					<div class="comment_depth2"><div class="comment_user">admin</div><div class="comment_date">2017-01-01</div><div class="comment_contents">absdqweq</div></div>
-					<div class="comment_depth2"><div class="comment_user">admin</div><div class="comment_date">2017-01-01</div><div class="comment_contents">absdqweq</div></div>
-					<div class="comment_depth3"><div class="comment_user">admin</div><div class="comment_date">2017-01-01</div><div class="comment_contents">absdqweq</div></div>
-					<div class="comment_depth1"><div class="comment_user">admin</div><div class="comment_date">2017-01-01</div><div class="comment_contents">absdqweq</div></div>
+					<c:forEach var="comment" items="${comments }">
+						<div class="comment_depth${comment.depth }">
+							<div class="comment_user">${comment.userName }</div>
+							<div class="comment_date"><fmt:formatDate pattern="yyyy-MM-dd" value="${comment.modifyDate }" /></div>
+							<div class="comment_contents">${comment.contents }</div>
+						</div>
+					</c:forEach>
+				</div>
+				<div id="comment_form">
+					<textarea id="comment_content" rows="3" cols="50"></textarea>
+					<div id="comment_button"></div>
 				</div>
 			</div>
 		</div>

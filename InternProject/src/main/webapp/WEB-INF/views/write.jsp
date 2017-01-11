@@ -34,15 +34,15 @@
 				<table class="write_table">
 					<tr>
 						<td>제목</td>
-						<td><input id="post_title" type="text" /></td>
+						<td><input id="post_title" type="text" value="${post.title }"/></td>
 					</tr>
 					<tr>
 						<td>내용</td>
-						<td><textarea id="post_contents" rows="10" cols="10"></textarea></td>
+						<td><textarea id="post_contents" rows="10" cols="10">${post.contents }</textarea></td>
 					</tr>
 				</table>
 				<div class="button_frame">
-					<div id="confirm" class="button">글쓰기</div>
+					<div id="confirm" class="button"></div>
 					<div id="cancel" class="button">취소</div>
 				</div>
 			</div>
