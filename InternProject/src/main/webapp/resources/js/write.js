@@ -48,9 +48,6 @@ function postNewPost() {
 	var title = defendXSS($("#post_title").val());
 	var contents = CKEDITOR.instances['post_contents'].getData();
 	
-	// TODO: 추후 userId를 불러오는 부분 변경 필요
-	var userId = 1;
-	
 	if (isValidationPost(title, contents) === true ) {
 		callAjax("POST", POST_ROOT, {
 			"boardId" : CURRENT_BOARD_ID,
@@ -88,12 +85,4 @@ function isValidationPost(title, contents) {
 	}
 	
 	return true;
-}
-
-function isWhiteSpace(text) {
-	if (text.trim() === "" | text == null) {
-		return true;
-	}
-	
-	return false;
 }

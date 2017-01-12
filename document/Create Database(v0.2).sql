@@ -37,8 +37,10 @@ CREATE TABLE comment(
     post_id INT NOT NULL,																		# post id with this comment
     user_id INT NOT NULL,																		# user id who wrote this comment
     contents TEXT NOT NULL,																		# comment contents
+    depth INT(1) DEFAULT 1,																		# comment depth
     create_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,									# comment create date
     modify_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,		# comment modify date
+    is_deleted bool DEFAULT FALSE,																# check deleted comment
     PRIMARY KEY(id),
     FOREIGN KEY(post_id) REFERENCES post(id),
     FOREIGN KEY(user_id) REFERENCES user(id)
@@ -88,8 +90,10 @@ CREATE TABLE trash_comment(
     post_id INT,
     user_id INT,
     contents TEXT,
+    depth int(1),
     create_date TIMESTAMP,
-    modify_date TIMESTAMP
+    modify_date TIMESTAMP,
+    is_deleted bool
 );
 
 CREATE TABLE trash_file(

@@ -24,6 +24,9 @@ public class PostDAO {
 
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
+	
+	@Autowired
+	private CommentDAO commentDAO;
 
 	@Value("#{query['post.countPageNumber']}")
 	private String QUERY_COUNTPAGENUMBER;
@@ -166,6 +169,7 @@ public class PostDAO {
 	 */
 	public int deletePost(int postId) {
 		gotoTrash(postId);
+		commentDAO.deleteCommentByPostId(postId);
 		
 		return jdbcTemplate.update(QUERY_DELETEPOST, postId);
 	}

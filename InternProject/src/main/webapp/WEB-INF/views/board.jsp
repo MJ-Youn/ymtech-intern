@@ -35,11 +35,11 @@
 				<div id="post_write"></div>
 				<table class="post_list">
 					<tr>
-						<th class="number">번호</th>
-						<th class="title">제목</th>
-						<th class="name">글쓴이</th>
-						<th class="date">날짜</th>
-						<th class="hit_count">조회수</th>
+						<th>번호</th>
+						<th>제목</th>
+						<th>글쓴이</th>
+						<th>날짜</th>
+						<th>조회수</th>
 					</tr>
 					<c:forEach var="post" items="${postList }">
 						<tr>

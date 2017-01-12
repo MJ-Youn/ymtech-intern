@@ -15,4 +15,5 @@ public class CommentVO {
 	private Date createDate;
 	private Date modifyDate;
 	private int depth;
+	private int isDeleted;
 }

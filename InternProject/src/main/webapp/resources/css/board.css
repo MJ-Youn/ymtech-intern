@@ -59,7 +59,7 @@
 	text-align: center;
 }
 
-.post_list .title {
+.post_list .title:not(:first-child) {
 	cursor: pointer;
 }
 

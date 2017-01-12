@@ -14,7 +14,11 @@ import org.springframework.web.servlet.ModelAndView;
 import com.dev2.intern.service.BoardService;
 import com.dev2.intern.service.CommentService;
 import com.dev2.intern.service.PostService;
+import com.dev2.intern.util.ResponseHeaderUtil;
+import com.dev2.intern.vo.ModifyCommentVO;
 import com.dev2.intern.vo.ModifyPostVO;
+import com.dev2.intern.vo.ResponseVO;
+import com.dev2.intern.vo.WriteCommentVO;
 import com.dev2.intern.vo.WritePostVO;
 
 import lombok.extern.slf4j.Slf4j;
@@ -23,6 +27,8 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class ModelAndViewController {
 
+	private static ResponseVO SUCCESS_RESPONSE = new ResponseVO().setHeader(ResponseHeaderUtil.RESPONSE_SUCCESS_HEADER); 
+	
 	@Autowired
 	private BoardService boardService;
 	
@@ -98,43 +104,57 @@ public class ModelAndViewController {
 	
 	@RequestMapping(value = "/post", method = RequestMethod.POST)
 	@ResponseBody
-	public String writePost(@RequestBody WritePostVO writePostVO) {
+	public ResponseVO writePost(@RequestBody WritePostVO writePostVO) {
 		log.info(writePostVO.getBoardId() + " board's new posting");
-		int isSuccessful = postService.postPost(writePostVO);
+		postService.postPost(writePostVO);
 		
-		if (isSuccessful == 1) {
-			return "200";
-		} else {
-			return "400";
-		}
+		return SUCCESS_RESPONSE;
 	}
 	
 	@RequestMapping(value = "/post", method = RequestMethod.DELETE)
 	@ResponseBody
-	public String DeletePost(@RequestBody Map<Object, Object> body) {
+	public ResponseVO deletePost(@RequestBody Map<Object, Object> body) {
 		int postNumber = (Integer)body.get("postNumber");
 		log.info(postNumber + " Post is deleted");
-		int isSuccessful = postService.deletePost(postNumber);
+		postService.deletePost(postNumber);
 
-		if (isSuccessful == 1) {
-			return "200";
-		} else {
-			return "400";
-		}
+		return SUCCESS_RESPONSE;
 	}
 	
 	@RequestMapping(value = "/post", method = RequestMethod.PATCH)
 	@ResponseBody
-	public String ModifyPost(@RequestBody ModifyPostVO modifyPostVO) {
-		log.info(modifyPostVO.getId() + " post is modify");
-		int isSuccessful = postService.modifyPost(modifyPostVO);
+	public ResponseVO modifyPost(@RequestBody ModifyPostVO modifyPostVO) {
+		log.info(modifyPostVO.getId() + " Post is modify");
+		postService.modifyPost(modifyPostVO);
 		
-		if (isSuccessful == 1) {
-			log.info("print 200");
-			return "200";
-		} else {
-			log.info("print 400");
-			return "400";
-		}
+		return SUCCESS_RESPONSE;
+	}
+	
+	@RequestMapping(value = "/comment", method = RequestMethod.POST)
+	@ResponseBody
+	public ResponseVO writeComment(@RequestBody WriteCommentVO writeCommentVO) {
+		log.info(writeCommentVO.getPostId() + " Post's new comment");
+		commentService.writeComment(writeCommentVO);
+		
+		return SUCCESS_RESPONSE;
+	}
+	
+	@RequestMapping(value = "/comment", method = RequestMethod.DELETE)
+	@ResponseBody
+	public ResponseVO deleteComment(@RequestBody Map<Object, Object> body) {
+		int commentId = (Integer)body.get("commentId");
+		log.info(commentId + " Comment is deleted");
+		commentService.deleteComment(commentId);
+		
+		return SUCCESS_RESPONSE;
+	}
+	
+	@RequestMapping(value = "/comment", method = RequestMethod.PATCH)
+	@ResponseBody
+	public ResponseVO modifyComment(@RequestBody ModifyCommentVO modifyCommentVO) {
+		log.info(modifyCommentVO.getId() + " Comment is modify");
+		commentService.modifyComment(modifyCommentVO);
+		
+		return SUCCESS_RESPONSE;
 	}
 }
