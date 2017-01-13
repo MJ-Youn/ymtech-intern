@@ -32,6 +32,11 @@ $(document).ready(function() {
 		$(this).parent().children(".comment_options_button").toggle();
 	});
 	
+	$(".post_file").click(function() {
+		var fileId = $(this).attr("id").match(/[0-9]/g).join("");
+		$(location).attr("href", FILE_ROOT + fileId);
+	});
+	
 	$(".comment_ok").click(function() {
 		CURRENT_COMMENT_CONTENTS = $(this).parent().children(".comment_contents").html();
 		callAjax("PATCH", COMMENT_ROOT, {

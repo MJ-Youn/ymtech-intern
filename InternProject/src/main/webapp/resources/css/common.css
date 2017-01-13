@@ -81,6 +81,58 @@
     left: -8px;
 }
 
+#post_files {
+	
+}
+
+.post_file {
+    display: inline-block;
+    margin: 5px 0;
+    padding: 5px;
+    cursor: pointer;
+}
+
+.post_file_image {
+    display: inline-block;
+    width: 15px;
+    height: 15px;
+    background-size: cover;
+    background-image: url(/img/file.ico);
+}
+
+.post_file_name {
+	display: inline-block;
+    font-size: 14px;
+}
+
+.xls, .xlsx {
+    background-image: url(/img/excel.ico);
+}
+
+.png, .jpg, .jpeg, .gif {
+    background-image: url(/img/image.ico);
+}
+
+.mp3, .wav {
+    background-image: url(/img/music.ico);
+}
+
+.pdf {
+    background-image: url(/img/pdf.ico);
+}
+
+.ppt, .pptx {
+    background-image: url(/img/powerpoint.ico);
+}
+
+.doc, .docx {
+    background-image: url(/img/word.ico);
+}
+
+.zip, .tar {
+    background-image: url(/img/zip.ico);
+}
+
 #footer {
     position: relative;
     border-top: 2px solid RGB(220,0,0);

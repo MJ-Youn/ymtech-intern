@@ -1,7 +1,13 @@
 package com.dev2.intern.controller;
 
+import java.io.File;
+import java.io.IOException;
+import java.net.URLEncoder;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletResponse;
+
+import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -13,8 +19,10 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.dev2.intern.service.BoardService;
 import com.dev2.intern.service.CommentService;
+import com.dev2.intern.service.FileService;
 import com.dev2.intern.service.PostService;
 import com.dev2.intern.util.ResponseHeaderUtil;
+import com.dev2.intern.vo.FileVO;
 import com.dev2.intern.vo.ModifyCommentVO;
 import com.dev2.intern.vo.ModifyPostVO;
 import com.dev2.intern.vo.ResponseVO;
@@ -37,6 +45,9 @@ public class ModelAndViewController {
 	
 	@Autowired
 	private CommentService commentService;
+	
+	@Autowired
+	private FileService fileService;
 	
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String index() {
@@ -86,6 +97,7 @@ public class ModelAndViewController {
 		log.info("view " + postId + " post");
 		ModelAndView modelAndView = new ModelAndView("post");
 		modelAndView.addObject("post", postService.getPostById(postId));
+		modelAndView.addObject("file", fileService.getFileByPostId(postId));
 		modelAndView.addObject("comments", commentService.listUpComment(postId));
 		
 		return modelAndView;
@@ -97,6 +109,7 @@ public class ModelAndViewController {
 		log.info("modify " + postId + " post");
 		ModelAndView modelAndView = new ModelAndView("write");
 		modelAndView.addObject("post", postService.getPostById(postId));
+		modelAndView.addObject("file", fileService.getFileByPostId(postId));
 		
 		return modelAndView;
 	}
@@ -104,9 +117,11 @@ public class ModelAndViewController {
 	
 	@RequestMapping(value = "/post", method = RequestMethod.POST)
 	@ResponseBody
-	public ResponseVO writePost(@RequestBody WritePostVO writePostVO) {
-		log.info(writePostVO.getBoardId() + " board's new posting");
-		postService.postPost(writePostVO);
+	public ResponseVO writePost(WritePostVO writePostVO) {
+        log.info(writePostVO.getBoardId() + " board's new posting");
+        int postId = postService.postPost(writePostVO);
+        
+        fileService.saveFile(postId, writePostVO.getFile());
 		
 		return SUCCESS_RESPONSE;
 	}
@@ -121,11 +136,12 @@ public class ModelAndViewController {
 		return SUCCESS_RESPONSE;
 	}
 	
-	@RequestMapping(value = "/post", method = RequestMethod.PATCH)
+	@RequestMapping(value = "/post/{postId}/modify", method = RequestMethod.POST)
 	@ResponseBody
-	public ResponseVO modifyPost(@RequestBody ModifyPostVO modifyPostVO) {
+	public ResponseVO modifyPost(ModifyPostVO modifyPostVO) throws IllegalStateException, IOException {
 		log.info(modifyPostVO.getId() + " Post is modify");
 		postService.modifyPost(modifyPostVO);
+		fileService.modifyFileByPost(modifyPostVO);
 		
 		return SUCCESS_RESPONSE;
 	}
@@ -156,5 +172,22 @@ public class ModelAndViewController {
 		commentService.modifyComment(modifyCommentVO);
 		
 		return SUCCESS_RESPONSE;
+	}
+	
+	@RequestMapping(value = "/file/{fileId}", method = RequestMethod.GET)
+	public void downloadFile(@PathVariable("fileId") String fileId, HttpServletResponse httpServletResponse) throws IOException {
+		log.info(fileId + " file is downloaded");
+		FileVO fileVO = fileService.getFileByFileId(fileId);
+
+		byte fileByte[] = FileUtils.readFileToByteArray(new File(fileVO.getLocation()));
+		
+		httpServletResponse.setContentType("application/octet-stream");
+		httpServletResponse.setContentLength(fileByte.length);
+		httpServletResponse.setHeader("Content-Disposition", "attachment; fileName=\"" + URLEncoder.encode(fileVO.getOriginalFileName(), "UTF-8")+"\";");
+		httpServletResponse.setHeader("Content-Transfer-Encoding", "bynary");
+		httpServletResponse.getOutputStream().write(fileByte);
+		
+		httpServletResponse.getOutputStream().flush();
+		httpServletResponse.getOutputStream().close();
 	}
 }

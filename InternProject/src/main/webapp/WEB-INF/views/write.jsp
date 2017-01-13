@@ -1,4 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE>
 <html lang="ko">
 	<head>
@@ -40,9 +41,30 @@
 						<td>내용</td>
 						<td><textarea id="post_contents" rows="10" cols="10">${post.contents }</textarea></td>
 					</tr>
+					<tr>
+						<td>파일</td>
+						<td>
+							<%-- <div id="post_files">
+								<c:if test="${!empty file }">
+									<div class="post_file" id="file${file.id }">
+										<div class="post_file_image ${file.type }"></div>
+										<div class="post_file_name">${file.originalFileName }</div>
+									</div>
+								</c:if>
+							</div> --%>
+							<input id="file_form" type="file"/>
+						</td>
+					</tr>
 				</table>
 				<div class="button_frame">
-					<div id="confirm" class="button"></div>
+					<c:choose>
+						<c:when test="${!empty post }">
+							<div id="confirm" class="button">글수정</div>
+						</c:when>
+						<c:otherwise>
+							<div id="confirm" class="button">글쓰기</div>
+						</c:otherwise>
+					</c:choose>
 					<div id="cancel" class="button">취소</div>
 				</div>
 			</div>

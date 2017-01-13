@@ -28,18 +28,19 @@ $(document).ready(function() {
 			}
 		});
 	});
+	
+	$(".post_file").click(function() {
+		$(this).remove();
+	});
+	
 });
 
 function checkModify() {
-	var currentURL = $(location).attr("href");
-	
-	if (currentURL.includes(MODIFY_ROOT.match(/[a-zA-Z]/g).join(""))) {
-		$("#confirm").html("글수정");
+	if ($("#confirm").html() === "글수정") {
 		modalConfirmContents = MODAL_POST_MODIFY_CONFIRM_CONTENTS;
 		CURRENT_POST_ID = Number($(location).attr("href").split(POST_ROOT)[1].split(MODIFY_ROOT)[0]);
 		modify = true;
-	} else {
-		$("#confirm").html("글쓰기");
+	} else if ($("#confirm").html() === "글쓰기") {
 		modalConfirmContents = MODAL_POSTING_CONFIRM_CONTENTS;
 	}
 }
@@ -47,15 +48,45 @@ function checkModify() {
 function postNewPost() {
 	var title = defendXSS($("#post_title").val());
 	var contents = CKEDITOR.instances['post_contents'].getData();
+	var data = new FormData();
+	var file = null;
+
+//	var files = [];
+//	
+//	for (var i = 0 ; i < $("#file_form")[0].files.length ; i++) {
+//		files[i] = $("#file_form")[0].files[i];
+//	}
+	
+	data.append("boardId", Number(CURRENT_BOARD_ID));
+	data.append("userId", userId);
+	data.append("title", title);
+	data.append("contents", contents);
+	
+	if ($("#file_form")[0].files.length !== 0) {
+		file = $("#file_form")[0].files[0];
+		data.append("file", file);
+	}
+	
+//	data.append("files", files);
 	
 	if (isValidationPost(title, contents) === true ) {
-		callAjax("POST", POST_ROOT, {
-			"boardId" : CURRENT_BOARD_ID,
-			"userId": userId,
-			"title": title,
-			"contents": contents
-		}, function() {
-			$(location).attr("href", BOARD_ROOT + CURRENT_BOARD_ID + PAGE_ROOT + 1);
+		$.ajax({
+			type: "POST",
+			contentType: false,
+			url: POST_ROOT,
+			data: data,
+			dataType: "json",
+			processData: false,
+			success: function(data) {
+				if (data.header.resultCode === 200) {
+					$(location).attr("href", BOARD_ROOT + CURRENT_BOARD_ID + PAGE_ROOT + 1);
+				} else {
+					alert("Error");
+				}
+			},
+			error: function(request, status, error){
+				alert("code:" + request.status + "\nmessage:" + request.responseText + "\nerror:" + error);
+	        }
 		});
 	}
 }
@@ -63,14 +94,44 @@ function postNewPost() {
 function modifyPost() {
 	var title = defendXSS($("#post_title").val());
 	var contents = CKEDITOR.instances['post_contents'].getData();
+	var data = new FormData();
+	var file = null;
+	
+	data.append("id", Number(CURRENT_POST_ID));
+	data.append("title", title);
+	data.append("contents", contents);
+	
+	if ($("#file_form")[0].files.length !== 0) {
+		file = $("#file_form")[0].files[0];
+		data.append("file", file);
+	}
 	
 	if (isValidationPost(title, contents) === true ) {
-		callAjax("PATCH", POST_ROOT, {
-			"id": CURRENT_POST_ID,
-			"title": title,
-			"contents": contents
-		}, function() {
-			$(location).attr("href", BOARD_ROOT + CURRENT_BOARD_ID + POST_ROOT + CURRENT_POST_ID);
+//		callAjax("PATCH", POST_ROOT, {
+//			"id": CURRENT_POST_ID,
+//			"title": title,
+//			"contents": contents
+//		}, function() {
+//			$(location).attr("href", BOARD_ROOT + CURRENT_BOARD_ID + POST_ROOT + CURRENT_POST_ID);
+//		});
+		
+		$.ajax({
+			type: "POST",
+			contentType: false,
+			url: POST_ROOT + CURRENT_POST_ID + MODIFY_ROOT,
+			data: data,
+			dataType: "json",
+			processData: false,
+			success: function(data) {
+				if (data.header.resultCode === 200) {
+					$(location).attr("href", BOARD_ROOT + CURRENT_BOARD_ID + POST_ROOT + CURRENT_POST_ID);
+				} else {
+					alert("Error");
+				}
+			},
+			error: function(request, status, error){
+				alert("code:" + request.status + "\nmessage:" + request.responseText + "\nerror:" + error);
+	        }
 		});
 	}
 }

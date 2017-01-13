@@ -10,6 +10,7 @@ var POST_ROOT = "/post/";
 var PAGE_ROOT = "/page/";
 var MODIFY_ROOT = "/modify/";
 var COMMENT_ROOT = "/comment/";
+var FILE_ROOT = "/file/";
 
 var NEW_BOARD_LIST_ELEMENT = "<li class='board_tab'></li>";
 var NEW_PAGINATION_LIST_ELEMENT = "<li class='page_number'></li>";

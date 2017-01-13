@@ -51,6 +51,16 @@
 					<tr>
 						<td colspan="6" id="post_contents">${post.contents }</td>
 					</tr>
+					<c:if test="${!empty file }">
+						<tr>
+							<td colspan="6" id="post_files">
+								<div class="post_file" id="file${file.id }">
+									<div class="post_file_image ${file.type }"></div>
+									<div class="post_file_name">${file.originalFileName }</div>
+								</div>
+							</td>
+						</tr>
+					</c:if>
 				</table>
 				<div id="post_button_frame">
 					<div id="modify_post" class="post_button"></div>

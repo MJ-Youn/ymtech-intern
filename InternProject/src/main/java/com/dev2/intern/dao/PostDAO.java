@@ -1,5 +1,7 @@
 package com.dev2.intern.dao;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -10,12 +12,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import com.dev2.intern.vo.ModifyPostVO;
 import com.dev2.intern.vo.PostVO;
 import com.dev2.intern.vo.WritePostVO;
+import com.mysql.jdbc.Statement;
 
 @Repository
 public class PostDAO {
@@ -25,9 +31,6 @@ public class PostDAO {
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
 	
-	@Autowired
-	private CommentDAO commentDAO;
-
 	@Value("#{query['post.countPageNumber']}")
 	private String QUERY_COUNTPAGENUMBER;
 	
@@ -138,10 +141,28 @@ public class PostDAO {
 	 * 			새로 작성된 게시글. 유저 id, 게시판 id, 제목, 내용을 가지고 있음
 	 * @return 정상적으로 INSERT가 됬으면 1, 아니면 0
 	 */
-	public int postPost(WritePostVO writePostVO) {
-		int postNumber = calculateLastPostNumber(writePostVO.getBoardId());
+	public int postPost(final WritePostVO writePostVO) {
+		final int postNumber = calculateLastPostNumber(writePostVO.getBoardId());
+		KeyHolder keyHolder = new GeneratedKeyHolder();
 		
-		return jdbcTemplate.update(QUERY_POSTPOST, writePostVO.getUserId(), postNumber, writePostVO.getBoardId(), writePostVO.getTitle(), writePostVO.getContents());
+		jdbcTemplate.update(new PreparedStatementCreator() {
+			@Override
+			public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
+				PreparedStatement preparedStatement = con.prepareStatement(QUERY_POSTPOST, Statement.RETURN_GENERATED_KEYS);
+				
+				preparedStatement.setInt(1, writePostVO.getUserId());
+				preparedStatement.setInt(2, postNumber);
+				preparedStatement.setInt(3, writePostVO.getBoardId());
+				preparedStatement.setString(4, writePostVO.getTitle());
+				preparedStatement.setString(5, writePostVO.getContents());
+				
+				return preparedStatement;
+			}
+		}, keyHolder);
+		
+		int postId = keyHolder.getKey().intValue();
+		
+		return postId;
 	}
 	
 	/**
@@ -169,7 +190,6 @@ public class PostDAO {
 	 */
 	public int deletePost(int postId) {
 		gotoTrash(postId);
-		commentDAO.deleteCommentByPostId(postId);
 		
 		return jdbcTemplate.update(QUERY_DELETEPOST, postId);
 	}
