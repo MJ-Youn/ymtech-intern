@@ -3,7 +3,6 @@ package com.dev2.intern.dao;
 import java.util.ArrayList;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -13,32 +12,11 @@ import com.dev2.intern.vo.ModifyCommentVO;
 import com.dev2.intern.vo.WriteCommentVO;
 
 @Repository
-public class CommentDAO {
+public class CommentDAO extends GenericDAO {
 
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
 
-	@Value("#{query['comment.listUpComment']}")
-	private String QUERY_LISTUPCOMMENT;
-	
-	@Value("#{query['comment.writeComment']}")
-	private String QUERY_WRITECOMMENT;
-	
-	@Value("#{query['comment.deleteComment']}")
-	private String QUERY_DELETECOMMENT;
-	
-	@Value("#{query['comment.gotoTrash']}")
-	private String QUERY_GOTOTRASH;
-	
-	@Value("#{query['comment.modifyComment']}")
-	private String QUERY_MODIFYCOMMENT;
-	
-	@Value("#{query['comment.deleteCommentByPostId']}")
-	private String QUERY_DELETECOMMENTBYPOSTID;
-	
-	@Value("#{query['comment.gotoTrashByPostId']}")
-	private String QUERY_GOTOTRASHBYPOSTID;
-	
 	/**
 	 * postId에 해당하는 comment를 가져오기 위한 함수
 	 * 
@@ -47,7 +25,9 @@ public class CommentDAO {
 	 * @return comment의 list
 	 */
 	public ArrayList<CommentVO> listUpComment(String postId) {
-		ArrayList<CommentVO> unSortCommentList = (ArrayList<CommentVO>)jdbcTemplate.query(QUERY_LISTUPCOMMENT, new BeanPropertyRowMapper<CommentVO>(CommentVO.class), postId);
+		String query = getQuery("comment.listUpComment");
+		
+		ArrayList<CommentVO> unSortCommentList = (ArrayList<CommentVO>)jdbcTemplate.query(query, new BeanPropertyRowMapper<CommentVO>(CommentVO.class), postId);
 		ArrayList<CommentVO> sortedCommentList = sortComment(unSortCommentList);
 		
 		return sortedCommentList;
@@ -118,7 +98,9 @@ public class CommentDAO {
 	 * @return 성공적으로 삽입하면 1, 아니면 0
 	 */
 	public int writeComment(WriteCommentVO writeCommentVO) {
-		return jdbcTemplate.update(QUERY_WRITECOMMENT, writeCommentVO.getParentCommentId(), writeCommentVO.getPostId(), writeCommentVO.getUserId(), writeCommentVO.getDepth(), writeCommentVO.getContents());
+		String query = getQuery("comment.writeComment");
+		
+		return jdbcTemplate.update(query, writeCommentVO.getParentCommentId(), writeCommentVO.getPostId(), writeCommentVO.getUserId(), writeCommentVO.getDepth(), writeCommentVO.getContents());
 	}
 	
 	/**
@@ -129,9 +111,11 @@ public class CommentDAO {
 	 * @return 성공적으로 삭제하면 1, 아니면 0
 	 */
 	public int deleteComment(int commentId) {
+		String query = getQuery("comment.deleteComment");
+		
 		gotoTrash(commentId);
 		
-		return jdbcTemplate.update(QUERY_DELETECOMMENT, commentId);
+		return jdbcTemplate.update(query, commentId);
 	}
 	
 	/**
@@ -141,7 +125,9 @@ public class CommentDAO {
 	 * 			이전할 comment의 id
 	 */
 	private void gotoTrash(int commentId) {
-		jdbcTemplate.update(QUERY_GOTOTRASH, commentId);
+		String query = getQuery("comment.gotoTrash");
+		
+		jdbcTemplate.update(query, commentId);
 	}
 	
 	/**
@@ -152,7 +138,9 @@ public class CommentDAO {
 	 * @return 성공적으로 수정하면 1, 아니면 0
 	 */
 	public int modifyComment(ModifyCommentVO modifyCommentVO) {
-		return jdbcTemplate.update(QUERY_MODIFYCOMMENT, modifyCommentVO.getContents(), modifyCommentVO.getId());
+		String query = getQuery("comment.modifyComment");
+		
+		return jdbcTemplate.update(query, modifyCommentVO.getContents(), modifyCommentVO.getId());
 	}
 	
 	/**
@@ -162,8 +150,10 @@ public class CommentDAO {
 	 * 			삭제하는 post의 id
 	 */
 	public void deleteCommentByPostId(int postId) {
+		String query = getQuery("comment.deleteCommentByPostId");
+		
 		gotoTrashByPostId(postId);
-		jdbcTemplate.update(QUERY_DELETECOMMENTBYPOSTID, postId);
+		jdbcTemplate.update(query, postId);
 	}
 	
 	/**
@@ -173,6 +163,8 @@ public class CommentDAO {
 	 * 			삭제하는 post의 id
 	 */
 	private void gotoTrashByPostId(int postId) {
-		jdbcTemplate.update(QUERY_GOTOTRASHBYPOSTID, postId);
+		String query = getQuery("comment.gotoTrashByPostId");
+		
+		jdbcTemplate.update(query, postId);
 	}
 }

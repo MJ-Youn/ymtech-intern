@@ -8,7 +8,19 @@
 		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.2.xsd">
 
 	<util:properties id="db" location="classpath:properties/db.properties" />	
-	<util:properties id="query" location="classpath:properties/query.properties" />	
+	
+	<!-- <bean id="propertySource" class="org.springframework.context.support.ResourceBundleMessageSource">
+		<property name="basenames">
+			<list>
+				<value>classpath:properties/*</value>
+			</list>
+		</property>
+	</bean> -->
+	
+	<bean id="querySource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
+		<property name="basename" value="classpath:properties/query" />
+		<property name="defaultEncoding" value="UTF-8" />
+	</bean>
 	
 	<!-- Root Context: defines shared resources visible to all other web components -->
 	<bean name="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">

@@ -9,7 +9,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
@@ -24,39 +23,12 @@ import com.dev2.intern.vo.WritePostVO;
 import com.mysql.jdbc.Statement;
 
 @Repository
-public class PostDAO {
+public class PostDAO extends GenericDAO {
 
 	private final int LIMIT_POST_COUNT_BY_PAGE = 15;
 
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
-	
-	@Value("#{query['post.countPageNumber']}")
-	private String QUERY_COUNTPAGENUMBER;
-	
-	@Value("#{query['post.listUpPost']}")
-	private String QUERY_LISTUPPOST;
-	
-	@Value("#{query['post.getPostById']}")
-	private String QUERY_GETPOSTBYID;
-	
-	@Value("#{query['post.countUpHitCount']}")
-	private String QUERY_COUNTUPHITCOUNT;
-	
-	@Value("#{query['post.postPost']}")
-	private String QUERY_POSTPOST;
-	
-	@Value("#{query['post.calculateLastPostNumber']}")
-	private String QUERY_CALCUALELASTPOSTNUMBER;
-	
-	@Value("#{query['post.deletePost']}")
-	private String QUERY_DELETEPOST;
-	
-	@Value("#{query['post.gotoTrash']}")
-	private String QUERY_GOTOTRASH;
-	
-	@Value("#{query['post.modifyPost']}")
-	private String QUERY_MODIFYPOST;
 	
 	/**
 	 * 해당 게시판에 page 개수를 구하기 위한 함수
@@ -67,7 +39,8 @@ public class PostDAO {
 	 * 			ResponseVO를 가지고 넘기기 위해 key, value 쌍을 갖는 object 형태로 return
 	 */
 	public Map<Object, Object> countPageNumber(String boardNumber) {
-		int postCount = jdbcTemplate.queryForObject(QUERY_COUNTPAGENUMBER, Integer.class, boardNumber);
+		String query = getQuery("post.countPageNumber");
+		int postCount = jdbcTemplate.queryForObject(query, Integer.class, boardNumber);
 		int pageCount = (postCount-1) / LIMIT_POST_COUNT_BY_PAGE + 1;
 		
 		Map<Object, Object> mapPageCount = new HashMap<Object, Object>();
@@ -87,9 +60,10 @@ public class PostDAO {
 	 * @return 게시글 리스트
 	 */
 	public ArrayList<PostVO> listUpPost(String boardNumber, String pageNumber) {
+		String query = getQuery("post.listUpPost");
 		int startIndex = (Integer.parseInt(pageNumber)-1) * LIMIT_POST_COUNT_BY_PAGE;
 		
-		ArrayList<PostVO> postList = (ArrayList<PostVO>)jdbcTemplate.query(QUERY_LISTUPPOST, new BeanPropertyRowMapper<PostVO>(PostVO.class), boardNumber, startIndex, LIMIT_POST_COUNT_BY_PAGE);
+		ArrayList<PostVO> postList = (ArrayList<PostVO>)jdbcTemplate.query(query, new BeanPropertyRowMapper<PostVO>(PostVO.class), boardNumber, startIndex, LIMIT_POST_COUNT_BY_PAGE);
 		
 		return postList;
 	}
@@ -102,9 +76,11 @@ public class PostDAO {
 	 * @return 하나의 게시글
 	 */
 	public PostVO getPostById(String postId) {
+		String query = getQuery("post.getPostById");
+		
 		countUpHitCount(postId);
 		
-		PostVO postVO = (PostVO)jdbcTemplate.queryForObject(QUERY_GETPOSTBYID, new RowMapper<PostVO>() {
+		PostVO postVO = (PostVO)jdbcTemplate.queryForObject(query, new RowMapper<PostVO>() {
 			public PostVO mapRow(ResultSet rs, int rowNum) throws SQLException {
 				PostVO postVO = new PostVO();
 				postVO.setId(rs.getInt("id"))
@@ -131,7 +107,8 @@ public class PostDAO {
 	 * 			해당 게시글
 	 */
 	private void countUpHitCount(String postId) {
-		jdbcTemplate.update(QUERY_COUNTUPHITCOUNT, postId);
+		String query = getQuery("post.countUpHitCount");
+		jdbcTemplate.update(query, postId);
 	}
 	
 	/**
@@ -142,13 +119,14 @@ public class PostDAO {
 	 * @return 정상적으로 INSERT가 됬으면 1, 아니면 0
 	 */
 	public int postPost(final WritePostVO writePostVO) {
+		final String query = getQuery("post.postPost");
 		final int postNumber = calculateLastPostNumber(writePostVO.getBoardId());
 		KeyHolder keyHolder = new GeneratedKeyHolder();
 		
 		jdbcTemplate.update(new PreparedStatementCreator() {
 			@Override
 			public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
-				PreparedStatement preparedStatement = con.prepareStatement(QUERY_POSTPOST, Statement.RETURN_GENERATED_KEYS);
+				PreparedStatement preparedStatement = con.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
 				
 				preparedStatement.setInt(1, writePostVO.getUserId());
 				preparedStatement.setInt(2, postNumber);
@@ -174,8 +152,10 @@ public class PostDAO {
 	 * 			NullPointerException이 나면, 즉, 게시글이 없으면 1
 	 */
 	private int calculateLastPostNumber(int boardNumber) {
+		String query = getQuery("post.calculateLastPostNumber");
+		
 		try {
-			return jdbcTemplate.queryForObject(QUERY_CALCUALELASTPOSTNUMBER, Integer.class, boardNumber) + 1;
+			return jdbcTemplate.queryForObject(query, Integer.class, boardNumber) + 1;
 		} catch (NullPointerException npe) {
 			return 1;
 		}
@@ -189,9 +169,11 @@ public class PostDAO {
 	 * @return 정상적으로 DELETE가 됬으면 1, 아니면 0
 	 */
 	public int deletePost(int postId) {
+		String query = getQuery("post.deletePost");
+		
 		gotoTrash(postId);
 		
-		return jdbcTemplate.update(QUERY_DELETEPOST, postId);
+		return jdbcTemplate.update(query, postId);
 	}
 	
 	/**
@@ -201,7 +183,8 @@ public class PostDAO {
 	 * 			옮겨갈 게시글의 id
 	 */
 	private void gotoTrash(int postId) {
-		jdbcTemplate.update(QUERY_GOTOTRASH, postId);
+		String query = getQuery("post.gotoTrash");
+		jdbcTemplate.update(query, postId);
 	}
 	
 	/**
@@ -212,6 +195,7 @@ public class PostDAO {
 	 * @return 정상적으로 UPDATE가 됬으면 1, 아니면 0
 	 */
 	public int modifyPost(ModifyPostVO modifyPostVO) {
-		return jdbcTemplate.update(QUERY_MODIFYPOST, modifyPostVO.getTitle(), modifyPostVO.getContents(), modifyPostVO.getId());
+		String query = getQuery("post.modifyPost");
+		return jdbcTemplate.update(query, modifyPostVO.getTitle(), modifyPostVO.getContents(), modifyPostVO.getId());
 	}
 }
