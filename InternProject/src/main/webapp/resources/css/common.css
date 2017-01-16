@@ -4,11 +4,19 @@
 	#header {
 		padding: 0 10%;
 	}
+	
+	#user_info {
+		right: 25%;
+	}
 }
 
 @media screen and (min-width: 1017px) and (max-width: 1500px) {
 	#header {
 		padding: 0
+	}
+	
+	#user_info {
+		right: 0;
 	}
 }
 
@@ -25,6 +33,10 @@
 @media screen and (max-width: 1017px) {
 	#header {
 		padding: 0;
+	}
+	
+	#user_info {
+		right: 0;
 	}
 	
 	.main_frame {
@@ -70,6 +82,55 @@
 	display: inline-block;
 	padding: 12px;
 	cursor: pointer;
+}
+
+#user_info {
+    position: absolute;
+    display: inline-block;
+    width: 200px;
+    height: 100%;
+}
+
+#user_info .user_button {
+	display: inline-block;
+    background-color: white;
+    height: 30px;
+    width: 30px;
+    margin: 3px;
+    cursor: pointer;
+}
+
+#login {
+    display: inline-block;
+    height: calc(100% - 30px);
+    width: calc(100% - 30px);
+    margin: 30px 30px 0 0;
+    text-align: right;
+}
+
+#goto_login {
+	background-image: url("/img/power.ico");
+	background-size: cover;
+}
+
+#goto_signup {
+	background-image: url("/img/plus.ico");
+	background-size: cover;
+}
+
+#loading {
+	position: absolute;
+	display: none;
+	background-image: url("https://upload.wikimedia.org/wikipedia/commons/b/b1/Loading_icon.gif");
+	background-position: center center;
+	background-repeat: no-repeat;
+	background-color: white;
+	opacity: 0.7;
+	top: 0;
+	left: 0;
+	z-index: 9999;
+	width: 100%;
+	height: 100%;
 }
 
 #body {

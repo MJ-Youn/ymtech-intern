@@ -5,9 +5,15 @@ var BOARD_LIST = [];
 $(document).ready(function() {
 	listUpBoard();
 
-	CURRENT_BOARD_ID = $(location).attr("href").split(BOARD_ROOT)[1].split("/")[0];
-	CURRENT_BOARD_NAME = getBoardName(CURRENT_BOARD_ID);
-	$("#board_title").html(CURRENT_BOARD_NAME);
+	if ($(location).attr("href").includes(BOARD_ROOT)) {
+		CURRENT_BOARD_ID = $(location).attr("href").split(BOARD_ROOT)[1].split("/")[0];
+		CURRENT_BOARD_NAME = getBoardName(CURRENT_BOARD_ID);
+		$("#board_title").html(CURRENT_BOARD_NAME);
+	} else if ($(location).attr("href").includes(LOGIN_ROOT.match(/[a-zA-Z]/g).join(""))) {
+		$("#board_title").html("Log In");
+	} else if ($(location).attr("href").includes(SIGNUP_ROOT.match(/[a-zA-Z]/g).join(""))) {
+		$("#board_title").html("Sign Up");
+	}
 	
 	$("#title").click(function() {
 		$(location).attr("href", ROOT);
@@ -17,6 +23,14 @@ $(document).ready(function() {
 		CURRENT_BOARD_ID = Number($(this).attr("id").match(/[0-9]/g).join(""));
 		$(location).attr("href", BOARD_ROOT + CURRENT_BOARD_ID + PAGE_ROOT + "1");
 	});
+	
+	$("#goto_login").click(function() {
+		$(location).attr("href", LOGIN_ROOT);
+	});
+	
+	$("#goto_signup").click(function() {
+		$(location).attr("href", SIGNUP_ROOT);
+	})
 });
 
 function listUpBoard() {

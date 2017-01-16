@@ -11,6 +11,8 @@ var PAGE_ROOT = "/page/";
 var MODIFY_ROOT = "/modify/";
 var COMMENT_ROOT = "/comment/";
 var FILE_ROOT = "/file/";
+var LOGIN_ROOT = "/login/";
+var SIGNUP_ROOT = "/signup/";
 
 var NEW_BOARD_LIST_ELEMENT = "<li class='board_tab'></li>";
 var NEW_PAGINATION_LIST_ELEMENT = "<li class='page_number'></li>";
@@ -19,6 +21,7 @@ var NEW_COMMENT_FORM_ELEMENT = "<div class='comment_form'> <textarea class='comm
 
 var MODAL_CONFIRM_TITLE = "확인";
 var MODAL_CANCEL_TITLE = "취소";
+
 var MODAL_POSTING_CONFIRM_CONTENTS = "글을 게시하시겠습니까?";
 var MODAL_POST_MODIFY_CONFIRM_CONTENTS = "글을 수정하시겠습니까?";
 var MODAL_POSTING_CANCEL_CONTENTS = "작성했던 내용은 저장되지 않습니다. 뒤로 돌아가시겠습니까?";
@@ -28,16 +31,17 @@ var MODAL_POSTING_UNVALID_CONTENTS = "내용을 입력하세요.";
 
 var MODAL_DELETE_CONFIRM_CONTENTS = "삭제하시겠습니까?";
 
+var MODAL_SIGNUP_INVALID_EMAIL = "메일이 올바르지 않습니다.";
+var MODAL_SIGNUP_INVALID_PASSWORD = "비밀번호가 올바르지 않습니다.";
+var MODAL_SIGNUP_INVALID_NAME = "이름이 올바르지 않습니다.";
+
+var MODAL_SIGNUP_SUCCESS_CONTENTS = "계정 생성이 완료되었습니다.";
+
 var MODAL_BUTTON_OK = "확인";
 var MODAL_BUTTON_CANCEL = "취소";
 
 //TODO: 추후 userId를 불러오는 부분 변경 필요
 var userId = 1;
-
-function fillModalData(title, contents) {
-	$("#dialog").attr("title", title);
-	$("#dialog_contents").html(contents);
-}
 
 function viewPromptModal(title, contents, callbackfunction) {
 	fillModalData(title, contents);
@@ -66,7 +70,7 @@ function viewPromptModal(title, contents, callbackfunction) {
 	});
 }
 
-function viewConfirmModal(title, contents) {
+function viewConfirmModal(title, contents, callbackfunction) {
 	fillModalData(title, contents);
 	$("#dialog").dialog({
 		resizable: false,
@@ -82,9 +86,15 @@ function viewConfirmModal(title, contents) {
 			text: MODAL_BUTTON_OK,
 			click: function() {
 				$(this).dialog("close");
+				callbackfunction.call();
 			}
 		} ]
     });
+}
+
+function fillModalData(title, contents) {
+	$("#dialog").attr("title", title);
+	$("#dialog_contents").html(contents);
 }
 
 function callAjax(type, url, data, callbackfunction) {
@@ -93,16 +103,26 @@ function callAjax(type, url, data, callbackfunction) {
 		contentType: "application/json; charset=UTF-8",
 		url: url,
 		data: JSON.stringify(data),
+		beforeSend: function() {
+            $("#loading").css({
+            	"display": "block",
+                "width": $(document).width(),
+                "height": $(document).height()
+            });
+        },
 		success: function(data) {
 			if (data.header.resultCode === 200) {
 				callbackfunction.call();
 			} else {
-				alert("Error");
+				viewConfirmModal(MODAL_CONFIRM_TITLE, data.header.resultMessage);
 			}
 		},
 		error: function(request, status, error){
 			alert("code:" + request.status + "\nmessage:" + request.responseText + "\nerror:" + error);
-        }
+        },
+		complete: function() {
+			$("#loading").css("display", "none");
+		}
 	});
 }
 

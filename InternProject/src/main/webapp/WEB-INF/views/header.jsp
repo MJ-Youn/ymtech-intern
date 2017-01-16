@@ -11,6 +11,16 @@
 	</c:forEach>
 </ul>
 
+<div id="user_info">
+	<div id="login">
+		<div id="goto_login" class="user_button"></div>
+		<div id="goto_signup" class="user_button"></div>
+	</div>
+</div>
+
 <div id="dialog" title="">
 	<p id="dialog_contents"></p>
+</div>
+
+<div id="loading">
 </div>

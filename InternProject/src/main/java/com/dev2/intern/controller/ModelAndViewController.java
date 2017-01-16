@@ -17,11 +17,14 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.dev2.intern.exception.ExistEmailException;
 import com.dev2.intern.service.BoardService;
 import com.dev2.intern.service.CommentService;
 import com.dev2.intern.service.FileService;
 import com.dev2.intern.service.PostService;
+import com.dev2.intern.service.UserService;
 import com.dev2.intern.util.ResponseHeaderUtil;
+import com.dev2.intern.vo.CreateUserVO;
 import com.dev2.intern.vo.FileVO;
 import com.dev2.intern.vo.ModifyCommentVO;
 import com.dev2.intern.vo.ModifyPostVO;
@@ -36,6 +39,7 @@ import lombok.extern.slf4j.Slf4j;
 public class ModelAndViewController {
 
 	private static ResponseVO SUCCESS_RESPONSE = new ResponseVO().setHeader(ResponseHeaderUtil.RESPONSE_SUCCESS_HEADER); 
+	private static ResponseVO EXIST_MAIL_RESPONSE = new ResponseVO().setHeader(ResponseHeaderUtil.RESPONSE_EXIST_EMAIL_MESSAGE);
 	
 	@Autowired
 	private BoardService boardService;
@@ -49,6 +53,9 @@ public class ModelAndViewController {
 	@Autowired
 	private FileService fileService;
 	
+	@Autowired
+	private UserService userService;
+	
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String index() {
 		log.info("index page load");
@@ -59,7 +66,6 @@ public class ModelAndViewController {
 
 	@RequestMapping(value = "/header", method = RequestMethod.GET)
 	public ModelAndView header() {
-		log.info("header page load");
 		ModelAndView modelAndView = new ModelAndView("header");
 		modelAndView.addObject("boardList", boardService.listUpBoard());
 		
@@ -68,8 +74,6 @@ public class ModelAndViewController {
 
 	@RequestMapping(value = "/footer", method = RequestMethod.GET)
 	public String footer() {
-		log.info("footer page load");
-
 		return "footer";
 	}
 
@@ -114,6 +118,19 @@ public class ModelAndViewController {
 		return modelAndView;
 	}
 	
+	@RequestMapping(value = "/login", method = RequestMethod.GET)
+	public String login() {
+		log.info("view login page");
+		
+		return "login";
+	}
+	
+	@RequestMapping(value = "/signup", method = RequestMethod.GET)
+	public String signup() {
+		log.info("view signup page");
+		
+		return "signup";
+	}
 	
 	@RequestMapping(value = "/post", method = RequestMethod.POST)
 	@ResponseBody
@@ -189,5 +206,18 @@ public class ModelAndViewController {
 		
 		httpServletResponse.getOutputStream().flush();
 		httpServletResponse.getOutputStream().close();
+	}
+	
+	@RequestMapping(value = "/signup", method = RequestMethod.POST)
+	@ResponseBody
+	public ResponseVO createUser(@RequestBody CreateUserVO createUserVO) {
+		log.info("new user created");
+		
+		try {
+			userService.createUser(createUserVO);
+			return SUCCESS_RESPONSE;
+		} catch(ExistEmailException eee) {
+			return EXIST_MAIL_RESPONSE;
+		}
 	}
 }
