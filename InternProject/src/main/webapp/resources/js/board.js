@@ -16,6 +16,11 @@ $(document).ready(function() {
 		var postId = Number($(this).attr("id").match(/[0-9]/g).join(""));
 		$(location).attr("href", BOARD_ROOT + CURRENT_BOARD_ID + POST_ROOT + postId);
 	});
+	
+	$(".page_number:not(.active)").click(function() {
+		var pageNumber = $(this).html();
+		$(location).attr("href", BOARD_ROOT + CURRENT_BOARD_ID + PAGE_ROOT + pageNumber);
+	});
 });
 
 function createPagination() {

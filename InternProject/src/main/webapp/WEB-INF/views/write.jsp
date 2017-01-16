@@ -6,10 +6,10 @@
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 		
 		<!-- Library include -->
-		<script type="text/javascript" src="/lib/js/jquery-3.1.1.min.js"></script>
-		<script type="text/javascript" src="/lib/js/jquery-ui.min.js"></script>
+		<script type="text/javascript" src="/lib/js/jquery-3.1.1.js"></script>
+		<script type="text/javascript" src="/lib/js/jquery-ui.js"></script>
 		
-		<link rel="stylesheet" type="text/css" href="/lib/css/jquery-ui.min.css" />
+		<link rel="stylesheet" type="text/css" href="/lib/css/jquery-ui.css" />
 		
 		<script type="text/javascript" src="/lib/ckeditor/ckeditor.js"></script>
 		

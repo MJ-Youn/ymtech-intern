@@ -75,6 +75,10 @@
     height: 22px;
 }
 
+.page_number:not(.active) {
+	cursor: pointer;
+}
+
 .pagination .active {
 	font-weight: bold;
 }
