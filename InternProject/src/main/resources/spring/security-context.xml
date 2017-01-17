@@ -6,21 +6,59 @@
 	<!-- ignore spring security -->
 	<http pattern="/js/*.js" security="none" />
 	<http pattern="/css/*.css" security="none" />
-	<http pattern="/img/**" security="none" />
+	<http pattern="/img/*" security="none" />
 	<http pattern="/lib/**" security="none" />
 	
 	<http auto-config="true">
-		<intercept-url pattern="/admin/**" access="ROLE_ADMIN" />
-		<intercept-url pattern="/**" access="ROLE_USER"/>
+		<intercept-url pattern="/header" access="permitAll" />
+		<intercept-url pattern="/footer" access="permitAll" />
+		<intercept-url pattern="/login" access="isAnonymous()" />
+		<intercept-url pattern="/signup" access="isAnonymous()" />
+		<intercept-url pattern="/signup/" access="isAnonymous()" />
+		<!-- <intercept-url pattern="/login" access="permitAll" />
+		<intercept-url pattern="/signup" access="permitAll" />
+		<intercept-url pattern="/signup/" access="permitAll" /> -->
+		<intercept-url pattern="/" access="permitAll" />
+		<intercept-url pattern="/user/**" access="isAuthenticated()" />
+		<intercept-url pattern="/logout" access="isAuthenticated()" />
+		<intercept-url pattern="/logout/" access="isAuthenticated()" />
+		<intercept-url pattern="/board/1/write/" access="hasRole('ROLE_ADMIN')" />
+		<intercept-url pattern="/board/1/write" access="hasRole('ROLE_ADMIN')" />
+		<intercept-url pattern="/board/1/**" access="permitAll" />
+		<intercept-url pattern="/admin/**" access="hasRole('ROLE_ADMIN')" />
+		<intercept-url pattern="/**" access="hasRole('ROLE_USER')" />
+		
+		<form-login login-page="/login" 
+					username-parameter="id"
+					password-parameter="password"
+					default-target-url="/"
+					authentication-failure-url="/login"
+					always-use-default-target="true"
+					login-processing-url="/login/check"
+ 					authentication-success-handler-ref="loginSuccessHandler"
+					authentication-failure-handler-ref="loginFailureHandler" />
+					
+		<logout logout-success-url="/"
+				invalidate-session="true"
+				logout-url="/logout" />
 	</http>	
 	
-	<authentication-manager>
+	<beans:bean id="loginSuccessHandler" class="com.dev2.intern.security.LoginSuccessHandler" />
+	<beans:bean id="loginFailureHandler" class="com.dev2.intern.security.LoginFailureHandler" />
+	
+	<!-- <authentication-manager>
 		<authentication-provider>
 			<user-service>
-				<user name="user" password="user" authorities="ROLE_USER"/>
-				<user name="admin" password="admin" authorities="ROLE_ADMIN"/>
+				<user name="user" password="user" authorities="ROLE_USER" />
+				<user name="admin" password="admin" authorities="ROLE_ADMIN" />
 			</user-service>
 		</authentication-provider>
+	</authentication-manager> -->
+	
+	<beans:bean id="customAuthenticationProvider" class="com.dev2.intern.security.CustomAuthenticationProvider" />
+	
+	<authentication-manager alias="authenticationManager" >
+		<authentication-provider ref="customAuthenticationProvider" />
 	</authentication-manager>
 	
 </beans:beans>

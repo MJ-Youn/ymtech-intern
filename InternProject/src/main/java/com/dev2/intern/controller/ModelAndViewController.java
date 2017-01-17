@@ -3,6 +3,7 @@ package com.dev2.intern.controller;
 import java.io.File;
 import java.io.IOException;
 import java.net.URLEncoder;
+import java.security.Principal;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
@@ -80,8 +81,9 @@ public class ModelAndViewController {
 	@RequestMapping(value = "/board/{boardNumber}/page/{pageNumber}", method = RequestMethod.GET)
 	public ModelAndView board(@PathVariable("boardNumber") String boardNumber,
 						@PathVariable("pageNumber") String pageNumber) {
-		log.info(boardNumber + " board page load");
+		log.info("{} board page load", boardNumber);
 		ModelAndView modelAndView = new ModelAndView("board");
+//		log.info("{} is log in", principal.getName());
 		modelAndView.addObject("pageCount", postService.countPageNumber(boardNumber));
 		modelAndView.addObject("postList", postService.listUpPost(boardNumber, pageNumber));
 
@@ -90,7 +92,7 @@ public class ModelAndViewController {
 
 	@RequestMapping(value = "/board/{boardNumber}/write", method = RequestMethod.GET)
 	public String write(@PathVariable("boardNumber") String boardNumber) {
-		log.info(boardNumber + " board writing page load");
+		log.info("{} board writing page load", boardNumber);
 
 		return "write";
 	}
@@ -98,7 +100,7 @@ public class ModelAndViewController {
 	@RequestMapping(value = "/board/{boardNumber}/post/{postId}", method = RequestMethod.GET)
 	public ModelAndView post(@PathVariable("boardNumber") String boardNumber,
 							@PathVariable("postId") String postId) {
-		log.info("view " + postId + " post");
+		log.info("view {} post ", postId);
 		ModelAndView modelAndView = new ModelAndView("post");
 		modelAndView.addObject("post", postService.getPostById(postId));
 		modelAndView.addObject("file", fileService.getFileByPostId(postId));
@@ -110,7 +112,7 @@ public class ModelAndViewController {
 	@RequestMapping(value = "/board/{boardNumber}/post/{postId}/modify", method = RequestMethod.GET)
 	public ModelAndView modify(@PathVariable("boardNumber") String boardNumber,
 						@PathVariable("postId") String postId) {
-		log.info("modify " + postId + " post");
+		log.info("modify {} post", postId);
 		ModelAndView modelAndView = new ModelAndView("write");
 		modelAndView.addObject("post", postService.getPostById(postId));
 		modelAndView.addObject("file", fileService.getFileByPostId(postId));
@@ -135,7 +137,7 @@ public class ModelAndViewController {
 	@RequestMapping(value = "/post", method = RequestMethod.POST)
 	@ResponseBody
 	public ResponseVO writePost(WritePostVO writePostVO) {
-        log.info(writePostVO.getBoardId() + " board's new posting");
+        log.info("{} board's new posting", writePostVO.getBoardId());
         int postId = postService.postPost(writePostVO);
         
         fileService.saveFile(postId, writePostVO.getFile());
@@ -147,7 +149,7 @@ public class ModelAndViewController {
 	@ResponseBody
 	public ResponseVO deletePost(@RequestBody Map<Object, Object> body) {
 		int postNumber = (Integer)body.get("postNumber");
-		log.info(postNumber + " Post is deleted");
+		log.info("{} Post is deleted", postNumber);
 		postService.deletePost(postNumber);
 
 		return SUCCESS_RESPONSE;
@@ -156,7 +158,7 @@ public class ModelAndViewController {
 	@RequestMapping(value = "/post/{postId}/modify", method = RequestMethod.POST)
 	@ResponseBody
 	public ResponseVO modifyPost(ModifyPostVO modifyPostVO) throws IllegalStateException, IOException {
-		log.info(modifyPostVO.getId() + " Post is modify");
+		log.info("{} Post is modify", modifyPostVO.getId());
 		postService.modifyPost(modifyPostVO);
 		fileService.modifyFileByPost(modifyPostVO);
 		
@@ -166,7 +168,7 @@ public class ModelAndViewController {
 	@RequestMapping(value = "/comment", method = RequestMethod.POST)
 	@ResponseBody
 	public ResponseVO writeComment(@RequestBody WriteCommentVO writeCommentVO) {
-		log.info(writeCommentVO.getPostId() + " Post's new comment");
+		log.info("{} Post's new comment", writeCommentVO.getPostId());
 		commentService.writeComment(writeCommentVO);
 		
 		return SUCCESS_RESPONSE;
@@ -176,7 +178,7 @@ public class ModelAndViewController {
 	@ResponseBody
 	public ResponseVO deleteComment(@RequestBody Map<Object, Object> body) {
 		int commentId = (Integer)body.get("commentId");
-		log.info(commentId + " Comment is deleted");
+		log.info("{} Comment is deleted", commentId);
 		commentService.deleteComment(commentId);
 		
 		return SUCCESS_RESPONSE;
@@ -185,7 +187,7 @@ public class ModelAndViewController {
 	@RequestMapping(value = "/comment", method = RequestMethod.PATCH)
 	@ResponseBody
 	public ResponseVO modifyComment(@RequestBody ModifyCommentVO modifyCommentVO) {
-		log.info(modifyCommentVO.getId() + " Comment is modify");
+		log.info("{} Comment is modify", modifyCommentVO.getId());
 		commentService.modifyComment(modifyCommentVO);
 		
 		return SUCCESS_RESPONSE;
@@ -193,7 +195,7 @@ public class ModelAndViewController {
 	
 	@RequestMapping(value = "/file/{fileId}", method = RequestMethod.GET)
 	public void downloadFile(@PathVariable("fileId") String fileId, HttpServletResponse httpServletResponse) throws IOException {
-		log.info(fileId + " file is downloaded");
+		log.info("{} file is downloaded", fileId);
 		FileVO fileVO = fileService.getFileByFileId(fileId);
 
 		byte fileByte[] = FileUtils.readFileToByteArray(new File(fileVO.getLocation()));

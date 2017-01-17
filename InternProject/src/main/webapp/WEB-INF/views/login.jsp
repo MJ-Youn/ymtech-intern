@@ -35,12 +35,17 @@
 				<h2 id="board_title"></h2>
 				
 				<div id="login_frame">
-					<input class="login_form" id="id" type="text" placeholder="Email"  autofocus />
-					<input class="login_form" id="password" type="password" placeholder="Password" />
-					<div id="login_button">로그인</div>
+<!-- 					<form action="/j_security_check" method="post"> -->
+					<form action="/login/check" method="post">
+						<input class="login_form" id="id" name="id" type="text" placeholder="Email"  autofocus />
+						<input class="login_form" id="password" name="password" type="password" placeholder="Password" />
+						<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+						<input type="submit" id="login_button" value="로그인" />
+					</form>
 				</div>
 				
 			</div>
+			
 		</div>
 		
 		<div id="footer">

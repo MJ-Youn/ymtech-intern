@@ -29,4 +29,15 @@ public class UserDAO extends GenericDAO {
 		}
 	}
 	
+	public int checkValidLogin(String email, String password) {
+		String query = getQuery("user.checkValidLogin");
+		
+		return jdbcTemplate.queryForObject(query, Integer.class, email, password);
+	}
+	
+	public int extractLevel(String email) {
+		String query = getQuery("user.extractLevel");
+		
+		return jdbcTemplate.queryForObject(query, Integer.class, email);
+	}
 }

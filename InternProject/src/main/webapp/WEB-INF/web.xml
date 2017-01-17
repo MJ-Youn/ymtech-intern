@@ -38,14 +38,14 @@
 	</listener>
 
 	<!-- 스프링 보안 필터 -->
-	<!-- <filter>
+	<filter>
 		<filter-name>springSecurityFilterChain</filter-name>
 		<filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
 	</filter>
 	<filter-mapping>
 		<filter-name>springSecurityFilterChain</filter-name>		
 		<url-pattern>/*</url-pattern>
-	</filter-mapping> -->
+	</filter-mapping>
 
 	<!-- Processes application requests -->
 	<servlet>
@@ -66,6 +66,10 @@
 	<error-page>
 		<error-code>404</error-code>
 		<location>/error/404</location>
+	</error-page>
+	<error-page>
+		<error-code>403</error-code>
+		<location>/error/403</location>
 	</error-page>
 
 </web-app>

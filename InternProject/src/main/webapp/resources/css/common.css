@@ -98,6 +98,7 @@
     width: 30px;
     margin: 3px;
     cursor: pointer;
+	background-size: cover;
 }
 
 #login {
@@ -110,12 +111,26 @@
 
 #goto_login {
 	background-image: url("/img/power.ico");
-	background-size: cover;
 }
 
 #goto_signup {
 	background-image: url("/img/plus.ico");
-	background-size: cover;
+}
+
+#login_info {
+    margin: 30px 0 0 0;
+}
+
+#info {
+	display: inline-block;
+   	margin-top: 7px;
+   	max-width: 165px;
+}
+
+#logout {
+	background-image: url("/img/power.ico");
+	position: absolute;
+	right: 0;
 }
 
 #loading {
