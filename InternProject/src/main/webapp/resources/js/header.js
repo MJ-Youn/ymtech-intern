@@ -11,6 +11,12 @@ $(document).ready(function() {
 		$("#board_title").html(CURRENT_BOARD_NAME);
 	} else if ($(location).attr("href").includes(LOGIN_ROOT.match(/[a-zA-Z]/g).join(""))) {
 		$("#board_title").html("Log In");
+		
+		if ($(location).attr("href").includes("false")) {
+			viewConfirmModal(MODAL_CONFIRM_TITLE, MODAL_LOGIN_FAIL_CONTENTS, function() {
+				document.logout.submit();
+			});
+		}
 	} else if ($(location).attr("href").includes(SIGNUP_ROOT.match(/[a-zA-Z]/g).join(""))) {
 		$("#board_title").html("Sign Up");
 	}
@@ -30,7 +36,11 @@ $(document).ready(function() {
 	
 	$("#goto_signup").click(function() {
 		$(location).attr("href", SIGNUP_ROOT);
-	})
+	});
+	
+	$("#info").click(function() {
+		$(location).attr("href", USER_ROOT);
+	});
 });
 
 function listUpBoard() {

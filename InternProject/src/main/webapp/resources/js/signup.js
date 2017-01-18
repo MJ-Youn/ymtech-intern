@@ -24,10 +24,8 @@ $(document).ready(function() {
 		signup();
 	});
 	
-	$("body").keypress(function(event) {
-		if (event.which === 13) {
-			signup();
-		}
+	$("#modify_button").click(function() {
+		modify();
 	});
 });
 
@@ -93,6 +91,25 @@ function signup() {
 			viewConfirmModal(MODAL_CONFIRM_TITLE, MODAL_SIGNUP_SUCCESS_CONTENTS, function() {
 				$(location).attr("href", LOGIN_ROOT);
 			});
-		})
+		});
+	}
+}
+
+function modify() {
+	checkValidName();
+	
+	if (passwordCheck !== true) {
+		viewConfirmModal(MODAL_CONFIRM_TITLE, MODAL_SIGNUP_INVALID_PASSWORD);
+	} else if (nameCheck !== true) {
+		viewConfirmModal(MODAL_CONFIRM_TITLE, MODAL_SIGNUP_INVALID_NAME);
+	} else {
+		callAjax("POST", USER_ROOT, {
+			"password" : PASSWORD,
+			"name" : NAME
+		}, function(data) {
+			viewConfirmModal(MODAL_CONFIRM_TITLE, MODAL_USER_MODIFY_CONTENTS, function() {
+				$(location).attr("href", ROOT);
+			});
+		});
 	}
 }

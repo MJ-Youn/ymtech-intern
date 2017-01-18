@@ -51,12 +51,6 @@ function postNewPost() {
 	var data = new FormData();
 	var file = null;
 
-//	var files = [];
-//	
-//	for (var i = 0 ; i < $("#file_form")[0].files.length ; i++) {
-//		files[i] = $("#file_form")[0].files[i];
-//	}
-	
 	data.append("boardId", Number(CURRENT_BOARD_ID));
 	data.append("userId", userId);
 	data.append("title", title);
@@ -67,8 +61,6 @@ function postNewPost() {
 		data.append("file", file);
 	}
 	
-//	data.append("files", files);
-	
 	if (isValidationPost(title, contents) === true ) {
 		$.ajax({
 			type: "POST",
@@ -77,6 +69,13 @@ function postNewPost() {
 			data: data,
 			dataType: "json",
 			processData: false,
+			beforeSend: function() {
+	            $("#loading").css({
+	            	"display": "block",
+	                "width": $(document).width(),
+	                "height": $(document).height()
+	            });
+	        },
 			success: function(data) {
 				if (data.header.resultCode === 200) {
 					$(location).attr("href", BOARD_ROOT + CURRENT_BOARD_ID + PAGE_ROOT + 1);
@@ -86,7 +85,10 @@ function postNewPost() {
 			},
 			error: function(request, status, error){
 				alert("code:" + request.status + "\nmessage:" + request.responseText + "\nerror:" + error);
-	        }
+	        },
+			complete: function() {
+				$("#loading").css("display", "none");
+			}
 		});
 	}
 }
@@ -107,14 +109,6 @@ function modifyPost() {
 	}
 	
 	if (isValidationPost(title, contents) === true ) {
-//		callAjax("PATCH", POST_ROOT, {
-//			"id": CURRENT_POST_ID,
-//			"title": title,
-//			"contents": contents
-//		}, function() {
-//			$(location).attr("href", BOARD_ROOT + CURRENT_BOARD_ID + POST_ROOT + CURRENT_POST_ID);
-//		});
-		
 		$.ajax({
 			type: "POST",
 			contentType: false,
@@ -122,6 +116,13 @@ function modifyPost() {
 			data: data,
 			dataType: "json",
 			processData: false,
+			beforeSend: function() {
+	            $("#loading").css({
+	            	"display": "block",
+	                "width": $(document).width(),
+	                "height": $(document).height()
+	            });
+	        },
 			success: function(data) {
 				if (data.header.resultCode === 200) {
 					$(location).attr("href", BOARD_ROOT + CURRENT_BOARD_ID + POST_ROOT + CURRENT_POST_ID);
@@ -131,7 +132,10 @@ function modifyPost() {
 			},
 			error: function(request, status, error){
 				alert("code:" + request.status + "\nmessage:" + request.responseText + "\nerror:" + error);
-	        }
+	        },
+			complete: function() {
+				$("#loading").css("display", "none");
+			}
 		});
 	}
 }

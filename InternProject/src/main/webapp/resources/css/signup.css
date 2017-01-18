@@ -55,3 +55,16 @@
 	font-weight: bold;
 	cursor: pointer;
 }
+
+#modify_button {
+	background-color: #DC0000;
+	border-radius: 4px;
+	text-align: center;
+	height: 50px;
+	width: 145px;
+    margin: 20px auto;
+	color: white;
+	font-size: 30px;
+	font-weight: bold;
+	cursor: pointer;
+}

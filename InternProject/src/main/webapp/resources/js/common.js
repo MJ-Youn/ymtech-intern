@@ -13,6 +13,8 @@ var COMMENT_ROOT = "/comment/";
 var FILE_ROOT = "/file/";
 var LOGIN_ROOT = "/login/";
 var SIGNUP_ROOT = "/signup/";
+var LOGOUT_ROOT = "/logout/";
+var USER_ROOT = "/user/";
 
 var NEW_BOARD_LIST_ELEMENT = "<li class='board_tab'></li>";
 var NEW_PAGINATION_LIST_ELEMENT = "<li class='page_number'></li>";
@@ -37,11 +39,17 @@ var MODAL_SIGNUP_INVALID_NAME = "이름이 올바르지 않습니다.";
 
 var MODAL_SIGNUP_SUCCESS_CONTENTS = "계정 생성이 완료되었습니다.";
 
+var MODAL_LOGIN_INVALID_EMAIL = "올바른 메일 정보를 입력해주세요.";
+var MODAL_LOGIN_INVALID_PASSWORD = "올바른 패스워드를 입력해주세요.";;
+var MODAL_LOGIN_FAIL_CONTENTS = "로그인 정보가 맞지 않습니다.";
+
+var MODAL_USER_MODIFY_CONTENTS = "개인정보 수정이 완료되었습니다.";
+
 var MODAL_BUTTON_OK = "확인";
 var MODAL_BUTTON_CANCEL = "취소";
 
 //TODO: 추후 userId를 불러오는 부분 변경 필요
-var userId = 1;
+var userId;
 
 function viewPromptModal(title, contents, callbackfunction) {
 	fillModalData(title, contents);
@@ -86,7 +94,9 @@ function viewConfirmModal(title, contents, callbackfunction) {
 			text: MODAL_BUTTON_OK,
 			click: function() {
 				$(this).dialog("close");
-				callbackfunction.call();
+				if (callbackfunction !== undefined && callbackfunction !== null) {
+					callbackfunction.call();
+				}
 			}
 		} ]
     });
@@ -112,7 +122,7 @@ function callAjax(type, url, data, callbackfunction) {
         },
 		success: function(data) {
 			if (data.header.resultCode === 200) {
-				callbackfunction.call();
+				callbackfunction.call(this, data);
 			} else {
 				viewConfirmModal(MODAL_CONFIRM_TITLE, data.header.resultMessage);
 			}
