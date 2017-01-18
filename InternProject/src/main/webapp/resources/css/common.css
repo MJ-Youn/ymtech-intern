@@ -125,10 +125,12 @@
 	display: inline-block;
    	margin-top: 7px;
    	max-width: 165px;
+   	cursor: pointer;
 }
 
 #logout {
 	background-image: url("/img/power.ico");
+	border: 0;
 	position: absolute;
 	right: 0;
 }

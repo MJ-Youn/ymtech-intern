@@ -39,8 +39,15 @@
 						<tr>
 							<td>Email</td>
 							<td>
-								<input class="signup_form" id="email" type="email" placeholder="Email to be used at login" autofocus />
-								<div class="form_status"></div>
+								<c:choose>
+								<c:when test="${empty user }">
+									<input class="signup_form" id="email" type="email" placeholder="Email to be used at login" autofocus />
+									<div class="form_status"></div>
+								</c:when>
+								<c:otherwise>
+									<div>${user.email }</div>
+								</c:otherwise>
+								</c:choose>
 							</td>
 						</tr>
 						<tr>
@@ -53,11 +60,18 @@
 						</tr>
 						<tr>
 							<td>Name</td>
-							<td><input class="signup_form" id="name" type="text" placeholder="Name"></td>
+							<td><input class="signup_form" id="name" type="text" placeholder="Name" value="${user.name }"></td>
 						</tr>
 					</table>
-
-					<div id="signup_button">회원가입</div>
+					
+					<c:choose>
+					<c:when test="${empty user }">
+						<div id="signup_button">회원가입</div>
+					</c:when>
+					<c:otherwise>
+						<div id="modify_button">정보수정</div>
+					</c:otherwise>
+					</c:choose>
 				</div>
 			</div>
 		</div>

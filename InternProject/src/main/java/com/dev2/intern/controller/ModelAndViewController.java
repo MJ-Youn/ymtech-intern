@@ -3,13 +3,14 @@ package com.dev2.intern.controller;
 import java.io.File;
 import java.io.IOException;
 import java.net.URLEncoder;
-import java.security.Principal;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -24,12 +25,16 @@ import com.dev2.intern.service.CommentService;
 import com.dev2.intern.service.FileService;
 import com.dev2.intern.service.PostService;
 import com.dev2.intern.service.UserService;
+import com.dev2.intern.util.HashMapUtil;
 import com.dev2.intern.util.ResponseHeaderUtil;
+import com.dev2.intern.util.UserGradeUtil;
 import com.dev2.intern.vo.CreateUserVO;
 import com.dev2.intern.vo.FileVO;
 import com.dev2.intern.vo.ModifyCommentVO;
 import com.dev2.intern.vo.ModifyPostVO;
+import com.dev2.intern.vo.ModifyUserVO;
 import com.dev2.intern.vo.ResponseVO;
+import com.dev2.intern.vo.UserVO;
 import com.dev2.intern.vo.WriteCommentVO;
 import com.dev2.intern.vo.WritePostVO;
 
@@ -61,8 +66,15 @@ public class ModelAndViewController {
 	public String index() {
 		log.info("index page load");
 		int firstBoardId = boardService.calculateBoardId();
-
-		return "redirect:board/" + firstBoardId + "/page/1";
+		
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		String grade = auth.getAuthorities().toArray()[0].toString();
+		
+		if (UserGradeUtil.getGradeNameByLevel(-1).equals(grade) == true) {
+			return "redirect:login?false";
+		} else {
+			return "redirect:board/" + firstBoardId + "/page/1";
+		}
 	}
 
 	@RequestMapping(value = "/header", method = RequestMethod.GET)
@@ -132,6 +144,17 @@ public class ModelAndViewController {
 		log.info("view signup page");
 		
 		return "signup";
+	}
+	
+	@RequestMapping(value = "/user", method = RequestMethod.GET)
+	public ModelAndView userModify() {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		String email = auth.getName();
+		
+		ModelAndView modelAndView = new ModelAndView("signup");
+		modelAndView.addObject("user", userService.getUserByEmail(email));
+		
+		return modelAndView;
 	}
 	
 	@RequestMapping(value = "/post", method = RequestMethod.POST)
@@ -221,5 +244,30 @@ public class ModelAndViewController {
 		} catch(ExistEmailException eee) {
 			return EXIST_MAIL_RESPONSE;
 		}
+	}
+	
+	@RequestMapping(value = "/user/id", method = RequestMethod.GET)
+	@ResponseBody
+	public ResponseVO getUserId() {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		String email = auth.getName();
+		
+		UserVO userVO = userService.getUserByEmail(email);
+		int userId = userVO.getId();
+	
+		Map<Object, Object> body = HashMapUtil.createHashMap("id", userId);
+		
+		return SUCCESS_RESPONSE.setBody(body);
+	}
+	
+	@RequestMapping(value = "/user", method = RequestMethod.POST)
+	@ResponseBody
+	public ResponseVO modifyUser(@RequestBody ModifyUserVO modifyUserVO) {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		String email = auth.getName();
+		
+		userService.modifyUser(email, modifyUserVO);
+		
+		return SUCCESS_RESPONSE;
 	}
 }

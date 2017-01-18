@@ -36,11 +36,10 @@
 				
 				<div id="login_frame">
 <!-- 					<form action="/j_security_check" method="post"> -->
-					<form action="/login/check" method="post">
+					<form action="/login/check" method="post" name="login">
 						<input class="login_form" id="id" name="id" type="text" placeholder="Email"  autofocus />
 						<input class="login_form" id="password" name="password" type="password" placeholder="Password" />
-						<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-						<input type="submit" id="login_button" value="로그인" />
+						<input type="button" id="login_button" value="로그인" />
 					</form>
 				</div>
 				

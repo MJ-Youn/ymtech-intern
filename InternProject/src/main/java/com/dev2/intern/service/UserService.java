@@ -1,17 +1,16 @@
 package com.dev2.intern.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import com.dev2.intern.dao.UserDAO;
 import com.dev2.intern.exception.ExistEmailException;
 import com.dev2.intern.vo.CreateUserVO;
+import com.dev2.intern.vo.ModifyUserVO;
 import com.dev2.intern.vo.UserVO;
 
 @Service
-public class UserService implements UserDetailsService {
+public class UserService {
 
 	@Autowired
 	private UserDAO userDAO;
@@ -20,10 +19,11 @@ public class UserService implements UserDetailsService {
 		return userDAO.createUser(createUserVO);
 	}
 
-	@Override
-	public UserVO loadUserByUsername(String username) throws UsernameNotFoundException {
-		System.out.println("hello");
-		
-		return null;
+	public UserVO getUserByEmail(String email) {
+		return userDAO.getUserByEmail(email);
+	}
+	
+	public int modifyUser(String email, ModifyUserVO modifyUserVO) {
+		return userDAO.modifyUser(email, modifyUserVO.getPassword(), modifyUserVO.getName());
 	}
 }
