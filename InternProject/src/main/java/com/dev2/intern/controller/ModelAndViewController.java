@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -20,11 +21,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.dev2.intern.exception.ExistEmailException;
-import com.dev2.intern.service.BoardService;
-import com.dev2.intern.service.CommentService;
-import com.dev2.intern.service.FileService;
-import com.dev2.intern.service.PostService;
-import com.dev2.intern.service.UserService;
+import com.dev2.intern.service.impl.BoardService;
+import com.dev2.intern.service.impl.CommentService;
+import com.dev2.intern.service.impl.FileService;
+import com.dev2.intern.service.impl.PostService;
+import com.dev2.intern.service.impl.UserService;
 import com.dev2.intern.util.HashMapUtil;
 import com.dev2.intern.util.ResponseHeaderUtil;
 import com.dev2.intern.util.UserGradeUtil;
@@ -48,18 +49,23 @@ public class ModelAndViewController {
 	private static ResponseVO EXIST_MAIL_RESPONSE = new ResponseVO().setHeader(ResponseHeaderUtil.RESPONSE_EXIST_EMAIL_MESSAGE);
 	
 	@Autowired
+	@Qualifier(BoardService.BEAN_QUALIFIER)
 	private BoardService boardService;
 	
 	@Autowired
+	@Qualifier(PostService.BEAN_QUALIFIER)
 	private PostService postService;
 	
 	@Autowired
+	@Qualifier(CommentService.BEAN_QUALIFIER)
 	private CommentService commentService;
 	
 	@Autowired
+	@Qualifier(FileService.BEAN_QUALIFIER)
 	private FileService fileService;
 	
 	@Autowired
+	@Qualifier(UserService.BEAN_QUALIFIER)
 	private UserService userService;
 	
 	@RequestMapping(value = "/", method = RequestMethod.GET)

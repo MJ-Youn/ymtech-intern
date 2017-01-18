@@ -1,58 +1,19 @@
 package com.dev2.intern.util;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-
-import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 public class FileUtil {
 	
-	private static final String FILE_DIRECTORY = "E:\\01. 인턴\\files\\";
+	public static final String FILE_DIRECTORY = "E:\\01. 인턴\\files\\";
 	
-    public List<Map<String,Object>> parseInsertFileInfo(Map<String,Object> map, HttpServletRequest request) throws Exception{
-        MultipartHttpServletRequest multipartHttpServletRequest = (MultipartHttpServletRequest)request;
-        Iterator<String> iterator = multipartHttpServletRequest.getFileNames();
-         
-        MultipartFile multipartFile = null;
-        String originalFileName = null;
-        String originalFileExtension = null;
-        String storedFileName = null;
-         
-        List<Map<String,Object>> list = new ArrayList<Map<String,Object>>();
-        Map<String, Object> listMap = null;
-         
-        String boardIdx = (String)map.get("IDX");
-         
-        File file = new File(FILE_DIRECTORY);
-        if(file.exists() == false){
-            file.mkdirs();
-        }
-         
-        while(iterator.hasNext()){
-            multipartFile = multipartHttpServletRequest.getFile(iterator.next());
-            if(multipartFile.isEmpty() == false){
-                originalFileName = multipartFile.getOriginalFilename();
-                originalFileExtension = originalFileName.substring(originalFileName.lastIndexOf("."));
-                storedFileName = UuidUtil.createUuidWithoutHyphen() + originalFileExtension;
-                 
-                file = new File(FILE_DIRECTORY + storedFileName);
-                multipartFile.transferTo(file);
-                 
-                listMap = new HashMap<String,Object>();
-                listMap.put("BOARD_IDX", boardIdx);
-                listMap.put("ORIGINAL_FILE_NAME", originalFileName);
-                listMap.put("STORED_FILE_NAME", storedFileName);
-                listMap.put("FILE_SIZE", multipartFile.getSize());
-                list.add(listMap);
-            }
-        }
-        return list;
-    }
+    /**
+	 * 저장할 Directory가 없을 경우 생성하기 위한 함수
+	 */
+	public static void checkExistDirectory() {
+		File directory = new File(FILE_DIRECTORY);
+		
+		if (directory.exists() == false) {
+			directory.mkdirs();
+		}
+	}
 }

@@ -1,4 +1,4 @@
-package com.dev2.intern.dao;
+package com.dev2.intern.dao.impl;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -8,36 +8,26 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
+import com.dev2.intern.dao.IPostDAO;
 import com.dev2.intern.vo.ModifyPostVO;
 import com.dev2.intern.vo.PostVO;
 import com.dev2.intern.vo.WritePostVO;
 import com.mysql.jdbc.Statement;
 
-@Repository
-public class PostDAO extends GenericDAO {
+@Repository(PostDAO.BEAN_QUALIFIER)
+public class PostDAO extends GenericDAO implements IPostDAO {
 
-	private final int LIMIT_POST_COUNT_BY_PAGE = 15;
-
-	@Autowired
-	private JdbcTemplate jdbcTemplate;
+	public static final String BEAN_QUALIFIER = "com.dev2.intern.dao.impl.PostDAO";
+	public static final int LIMIT_POST_COUNT_BY_PAGE = 15;
 	
-	/**
-	 * 해당 게시판에 page 개수를 구하기 위한 함수
-	 * 
-	 * @param boardNumber
-	 * 			해당 게시판의 id
-	 * @return "pageCount"를 key로 갖고 page 개수를 value로 갖는 map
-	 * 			ResponseVO를 가지고 넘기기 위해 key, value 쌍을 갖는 object 형태로 return
-	 */
+	@Override
 	public Map<Object, Object> countPageNumber(String boardNumber) {
 		String query = getQuery("post.countPageNumber");
 		int postCount = jdbcTemplate.queryForObject(query, Integer.class, boardNumber);
@@ -50,15 +40,7 @@ public class PostDAO extends GenericDAO {
 		return mapPageCount;
 	}
 	
-	/**
-	 * 해당 게시판의 현재 페이지에 있는 게시글을 찾기 위한 함수
-	 * 
-	 * @param boardNumber
-	 * 			해당 게시판 id
-	 * @param pageNumber
-	 * 			현재 페이지 번호
-	 * @return 게시글 리스트
-	 */
+	@Override
 	public ArrayList<PostVO> listUpPost(String boardNumber, String pageNumber) {
 		String query = getQuery("post.listUpPost");
 		int startIndex = (Integer.parseInt(pageNumber)-1) * LIMIT_POST_COUNT_BY_PAGE;
@@ -68,13 +50,7 @@ public class PostDAO extends GenericDAO {
 		return postList;
 	}
 	
-	/**
-	 * 게시글 하나를 화면에 보여주기 위한 함수
-	 * 
-	 * @param postId
-	 * 			해당 게시글의 id
-	 * @return 하나의 게시글
-	 */
+	@Override
 	public PostVO getPostById(String postId) {
 		String query = getQuery("post.getPostById");
 		
@@ -100,24 +76,13 @@ public class PostDAO extends GenericDAO {
 		return postVO;
 	}
 	
-	/**
-	 * 게시글을 눌렀을 때 조회수를 늘려주기 위한 함수
-	 * 
-	 * @param postId
-	 * 			해당 게시글
-	 */
-	private void countUpHitCount(String postId) {
+	@Override
+	public void countUpHitCount(String postId) {
 		String query = getQuery("post.countUpHitCount");
 		jdbcTemplate.update(query, postId);
 	}
 	
-	/**
-	 * 새로운 글을 DB에 넣어주기 위한 함수
-	 * 
-	 * @param writePostVO
-	 * 			새로 작성된 게시글. 유저 id, 게시판 id, 제목, 내용을 가지고 있음
-	 * @return 정상적으로 INSERT가 됬으면 1, 아니면 0
-	 */
+	@Override
 	public int postPost(final WritePostVO writePostVO) {
 		final String query = getQuery("post.postPost");
 		final int postNumber = calculateLastPostNumber(writePostVO.getBoardId());
@@ -143,15 +108,8 @@ public class PostDAO extends GenericDAO {
 		return postId;
 	}
 	
-	/**
-	 * 새로운 글을 작성하기 위해 해당 게시판의 마지막 게시글의 번호에 1을 더해 출력해주는 함수
-	 * 
-	 * @param boardNumber
-	 * 			해당 게시판의 id
-	 * @return 마지막 게시글 번호
-	 * 			NullPointerException이 나면, 즉, 게시글이 없으면 1
-	 */
-	private int calculateLastPostNumber(int boardNumber) {
+	@Override
+	public int calculateLastPostNumber(int boardNumber) {
 		String query = getQuery("post.calculateLastPostNumber");
 		
 		try {
@@ -161,13 +119,7 @@ public class PostDAO extends GenericDAO {
 		}
 	}
 	
-	/**
-	 * 일반 유저가 게시글을 삭제 위한 함수
-	 * 
-	 * @param postId
-	 * 			해당 게시글의 id
-	 * @return 정상적으로 DELETE가 됬으면 1, 아니면 0
-	 */
+	@Override
 	public int deletePost(int postId) {
 		String query = getQuery("post.deletePost");
 		
@@ -176,24 +128,13 @@ public class PostDAO extends GenericDAO {
 		return jdbcTemplate.update(query, postId);
 	}
 	
-	/**
-	 * 일반 유저가 게시글을 삭제 할 경우, 휴지통으로 옮기기 위한 함수
-	 * 
-	 * @param id
-	 * 			옮겨갈 게시글의 id
-	 */
-	private void gotoTrash(int postId) {
+	@Override
+	public void gotoTrash(int postId) {
 		String query = getQuery("post.gotoTrash");
 		jdbcTemplate.update(query, postId);
 	}
 	
-	/**
-	 * 게시글 수정을 위한 함수
-	 * 
-	 * @param modifyPostVO
-	 * 			수정할 게시글의 정보. 제목, 내용, 게시글의 id를 가지고 있음
-	 * @return 정상적으로 UPDATE가 됬으면 1, 아니면 0
-	 */
+	@Override
 	public int modifyPost(ModifyPostVO modifyPostVO) {
 		String query = getQuery("post.modifyPost");
 		return jdbcTemplate.update(query, modifyPostVO.getTitle(), modifyPostVO.getContents(), modifyPostVO.getId());

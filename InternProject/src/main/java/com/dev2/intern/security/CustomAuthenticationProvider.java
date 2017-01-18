@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.Collections;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -11,7 +12,7 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
-import com.dev2.intern.dao.UserDAO;
+import com.dev2.intern.dao.impl.UserDAO;
 import com.dev2.intern.util.UserGradeUtil;
 
 import lombok.extern.slf4j.Slf4j;
@@ -20,6 +21,7 @@ import lombok.extern.slf4j.Slf4j;
 public class CustomAuthenticationProvider implements AuthenticationProvider {
 
 	@Autowired
+	@Qualifier(UserDAO.BEAN_QUALIFIER)
 	private UserDAO userDAO;
 
 	@Override
