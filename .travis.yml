@@ -1,10 +1,12 @@
 language: java
 
-mvn install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
-mvn test -B
-
 jdk:
   - oraclejdk8
+
+sudo: false
+
+script: 
+  mvn clean verify
 
 branches:
   only:
