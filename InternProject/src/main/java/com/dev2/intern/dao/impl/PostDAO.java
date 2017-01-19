@@ -5,8 +5,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.PreparedStatementCreator;
@@ -25,36 +23,24 @@ import com.mysql.jdbc.Statement;
 public class PostDAO extends GenericDAO implements IPostDAO {
 
 	public static final String BEAN_QUALIFIER = "com.dev2.intern.dao.impl.PostDAO";
-	public static final int LIMIT_POST_COUNT_BY_PAGE = 15;
 	
 	@Override
-	public Map<Object, Object> countPageNumber(String boardNumber) {
+	public int countPost(String boardNumber) {
 		String query = getQuery("post.countPageNumber");
-		int postCount = jdbcTemplate.queryForObject(query, Integer.class, boardNumber);
-		int pageCount = (postCount-1) / LIMIT_POST_COUNT_BY_PAGE + 1;
-		
-		Map<Object, Object> mapPageCount = new HashMap<Object, Object>();
-		
-		mapPageCount.put("pageCount", pageCount);
-		
-		return mapPageCount;
+
+		return jdbcTemplate.queryForObject(query, Integer.class, boardNumber);
 	}
 	
 	@Override
-	public ArrayList<PostVO> listUpPost(String boardNumber, String pageNumber) {
+	public ArrayList<PostVO> listUpPost(String boardNumber, String pageNumber, int startIndex, int limitPostCountByPage) {
 		String query = getQuery("post.listUpPost");
-		int startIndex = (Integer.parseInt(pageNumber)-1) * LIMIT_POST_COUNT_BY_PAGE;
 		
-		ArrayList<PostVO> postList = (ArrayList<PostVO>)jdbcTemplate.query(query, new BeanPropertyRowMapper<PostVO>(PostVO.class), boardNumber, startIndex, LIMIT_POST_COUNT_BY_PAGE);
-		
-		return postList;
+		return (ArrayList<PostVO>)jdbcTemplate.query(query, new BeanPropertyRowMapper<PostVO>(PostVO.class), boardNumber, startIndex, limitPostCountByPage);
 	}
 	
 	@Override
 	public PostVO getPostById(String postId) {
 		String query = getQuery("post.getPostById");
-		
-		countUpHitCount(postId);
 		
 		PostVO postVO = (PostVO)jdbcTemplate.queryForObject(query, new RowMapper<PostVO>() {
 			public PostVO mapRow(ResultSet rs, int rowNum) throws SQLException {
@@ -79,6 +65,7 @@ public class PostDAO extends GenericDAO implements IPostDAO {
 	@Override
 	public void countUpHitCount(String postId) {
 		String query = getQuery("post.countUpHitCount");
+		
 		jdbcTemplate.update(query, postId);
 	}
 	
@@ -123,20 +110,20 @@ public class PostDAO extends GenericDAO implements IPostDAO {
 	public int deletePost(int postId) {
 		String query = getQuery("post.deletePost");
 		
-		gotoTrash(postId);
-		
 		return jdbcTemplate.update(query, postId);
 	}
 	
 	@Override
 	public void gotoTrash(int postId) {
 		String query = getQuery("post.gotoTrash");
+		
 		jdbcTemplate.update(query, postId);
 	}
 	
 	@Override
 	public int modifyPost(ModifyPostVO modifyPostVO) {
 		String query = getQuery("post.modifyPost");
+		
 		return jdbcTemplate.update(query, modifyPostVO.getTitle(), modifyPostVO.getContents(), modifyPostVO.getId());
 	}
 }

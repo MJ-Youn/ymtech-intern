@@ -22,6 +22,12 @@ public class UserService implements IUserService {
 	
 	@Override
 	public int createUser(CreateUserVO createUserVO) throws ExistEmailException {
+		int existionCheck = userDAO.checkExistUser(createUserVO.getEmail());
+		
+		if (existionCheck == 1) {
+			throw new ExistEmailException();
+		}
+		
 		return userDAO.createUser(createUserVO);
 	}
 
@@ -32,11 +38,13 @@ public class UserService implements IUserService {
 	
 	@Override
 	public int modifyUser(String email, ModifyUserVO modifyUserVO) {
-		return userDAO.modifyUser(email, modifyUserVO.getPassword(), modifyUserVO.getName());
+		int userId = userDAO.getUserByEmail(email).getId();
+		return userDAO.modifyUser(modifyUserVO.getPassword(), modifyUserVO.getName(), userId);
 	}
 
 	@Override
 	public int deleteUser(String email) {
+		userDAO.gotoTrash(email);
 		return userDAO.deleteUser(email);
 	}
 }

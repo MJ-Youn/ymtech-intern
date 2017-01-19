@@ -15,27 +15,7 @@ public interface ICommentDAO {
 	 * 			대상 post id
 	 * @return comment의 list
 	 */
-	public ArrayList<CommentVO> listUpComment(String postId);
-	
-	/**
-	 * DB에서 가져온 commentList들을 parent, child 순서에 맞게 정렬하기 위한 함수
-	 * 
-	 * @param unsortCommentList
-	 * 			정렬이 되지 않은 commentList
-	 * @return parent, child 순서대로 정렬이된 commentList
-	 */
-	public ArrayList<CommentVO> sortComment(ArrayList<CommentVO> unsortCommentList);
-	
-	/**
-	 * commentList에서 parentCommentId의 index값을 구하기 위한 함수
-	 * 
-	 * @param commentList
-	 * 			대상이 되는 commentList
-	 * @param parentCommentId
-	 * 			찾으려고 하는 parentCommentId
-	 * @return parentCommentId가 위치해 있는 index
-	 */
-	public int searchNextParentCommentIndex(ArrayList<CommentVO> commentList, int parentCommentId);
+	public ArrayList<CommentVO> getCommentByPost(String postId);
 	
 	/**
 	 * comment를 추가해주는 함수

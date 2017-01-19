@@ -1,7 +1,6 @@
 package com.dev2.intern.dao;
 
 import java.util.ArrayList;
-import java.util.Map;
 
 import com.dev2.intern.vo.ModifyPostVO;
 import com.dev2.intern.vo.PostVO;
@@ -10,25 +9,28 @@ import com.dev2.intern.vo.WritePostVO;
 public interface IPostDAO {
 
 	/**
-	 * 해당 게시판에 page 개수를 구하기 위한 함수
+	 * 대상 게시판에 존재하는 게시글의 개수를 세기 위한 함수
 	 * 
 	 * @param boardNumber
-	 * 			해당 게시판의 id
-	 * @return "pageCount"를 key로 갖고 page 개수를 value로 갖는 map
-	 * 			ResponseVO를 가지고 넘기기 위해 key, value 쌍을 갖는 object 형태로 return
+	 * 			대상 게시판의 번호
+	 * @return 게시글의 개수
 	 */
-	public Map<Object, Object> countPageNumber(String boardNumber);
+	public int countPost(String boardNumber);
 	
 	/**
-	 * 해당 게시판의 현재 페이지에 있는 게시글을 찾기 위한 함수
+	 * 대상 게시판의 게시글을 가져오기 위한 함수
 	 * 
 	 * @param boardNumber
-	 * 			해당 게시판 id
+	 * 			대상 게시판의 번호
 	 * @param pageNumber
-	 * 			현재 페이지 번호
-	 * @return 게시글 리스트
+	 * 			페이지 번호
+	 * @param startIndex
+	 * 			페이지에서 시작하는 게시글의 번호
+	 * @param limitPostCountByPage
+	 * 			한 페이지에 표시되는 게시글의 개수
+	 * @return
 	 */
-	public ArrayList<PostVO> listUpPost(String boardNumber, String pageNumber);
+	public ArrayList<PostVO> listUpPost(String boardNumber, String pageNumber, int startIndex, int limitPostCountByPage);
 	
 	/**
 	 * 게시글 하나를 화면에 보여주기 위한 함수

@@ -16,56 +16,10 @@ public class CommentDAO extends GenericDAO implements ICommentDAO {
 	public static final String BEAN_QUALIFIER = "com.dev2.intern.dao.impl.CommentDAO";
 	
 	@Override
-	public ArrayList<CommentVO> listUpComment(String postId) {
+	public ArrayList<CommentVO> getCommentByPost(String postId) {
 		String query = getQuery("comment.listUpComment");
 		
-		ArrayList<CommentVO> unSortCommentList = (ArrayList<CommentVO>)jdbcTemplate.query(query, new BeanPropertyRowMapper<CommentVO>(CommentVO.class), postId);
-		ArrayList<CommentVO> sortedCommentList = sortComment(unSortCommentList);
-		
-		return sortedCommentList;
-	}
-	
-	@Override
-	public ArrayList<CommentVO> sortComment(ArrayList<CommentVO> unsortCommentList) {
-		ArrayList<CommentVO> sortedCommentList = new ArrayList<CommentVO>();
-		
-		for (int i = 0 ; i < unsortCommentList.size() ; i++) {
-			if (unsortCommentList.get(i).getParentCommentId() < 0) {
-				sortedCommentList.add(unsortCommentList.get(i));
-			} else {
-				int parentCommentId = unsortCommentList.get(i).getParentCommentId();
-				int parentCommentIndex = searchNextParentCommentIndex(sortedCommentList, parentCommentId);
-				
-				sortedCommentList.add(parentCommentIndex, unsortCommentList.get(i));
-			}
-		}
-		
-		return sortedCommentList;
-	}
-	
-	@Override
-	public int searchNextParentCommentIndex(ArrayList<CommentVO> commentList, int parentCommentId) {
-		int nextParentCommentIndex = -1;
-		int i;
-		
-		for (i = 0 ; i < commentList.size() ; i++) {
-			if (commentList.get(i).getId() == parentCommentId) {
-				break;
-			}
-		}
-		
-		for (i = i + 1 ; i < commentList.size() ; i++) {
-			if (commentList.get(i).getParentCommentId() < parentCommentId) {
-				nextParentCommentIndex = i;
-				break;
-			}
-		}
-		
-		if (nextParentCommentIndex < 0) {
-			return commentList.size();
-		} else {
-			return nextParentCommentIndex;
-		}
+		return (ArrayList<CommentVO>)jdbcTemplate.query(query, new BeanPropertyRowMapper<CommentVO>(CommentVO.class), postId);
 	}
 	
 	@Override
@@ -78,8 +32,6 @@ public class CommentDAO extends GenericDAO implements ICommentDAO {
 	@Override
 	public int deleteComment(int commentId) {
 		String query = getQuery("comment.deleteComment");
-		
-		gotoTrash(commentId);
 		
 		return jdbcTemplate.update(query, commentId);
 	}
@@ -102,7 +54,6 @@ public class CommentDAO extends GenericDAO implements ICommentDAO {
 	public void deleteCommentByPostId(int postId) {
 		String query = getQuery("comment.deleteCommentByPostId");
 		
-		gotoTrashByPostId(postId);
 		jdbcTemplate.update(query, postId);
 	}
 	

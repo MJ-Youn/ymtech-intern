@@ -7,7 +7,6 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 import com.dev2.intern.dao.IUserDAO;
-import com.dev2.intern.exception.ExistEmailException;
 import com.dev2.intern.vo.CreateUserVO;
 import com.dev2.intern.vo.UserVO;
 
@@ -17,21 +16,17 @@ public class UserDAO extends GenericDAO implements IUserDAO {
 	public static final String BEAN_QUALIFIER = "com.dev2.intern.dao.impl.UserDAO";
 	
 	@Override
-	public int createUser(CreateUserVO createUserVO) throws ExistEmailException {
+	public int createUser(CreateUserVO createUserVO) {
 		String query = getQuery("user.createUser");
-		checkExistUser(createUserVO.getEmail());
 		
 		return jdbcTemplate.update(query, createUserVO.getEmail(), createUserVO.getName(), createUserVO.getPassword());
 	}
 	
 	@Override
-	public void checkExistUser(String email) throws ExistEmailException {
+	public int checkExistUser(String email) {
 		String query = getQuery("user.checkExistUser");
-		int existionCheck = jdbcTemplate.queryForObject(query, Integer.class, email);
 
-		if (existionCheck == 1) {
-			throw new ExistEmailException();
-		}
+		return jdbcTemplate.queryForObject(query, Integer.class, email);
 	}
 	
 	@Override
@@ -65,9 +60,8 @@ public class UserDAO extends GenericDAO implements IUserDAO {
 	}
 	
 	@Override
-	public int modifyUser(String email, String password, String name) {
+	public int modifyUser(String password, String name, int userId) {
 		String query = getQuery("user.modifyUser");
-		int userId = getUserByEmail(email).getId();
 		
 		return jdbcTemplate.update(query, password, name, userId);
 	}
@@ -75,7 +69,6 @@ public class UserDAO extends GenericDAO implements IUserDAO {
 	@Override
 	public int deleteUser(String email) {
 		String query = getQuery("user.deleteUser");
-		gotoTrash(email);
 		
 		return jdbcTemplate.update(query, email);
 	}

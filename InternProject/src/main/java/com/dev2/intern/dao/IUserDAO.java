@@ -1,6 +1,5 @@
 package com.dev2.intern.dao;
 
-import com.dev2.intern.exception.ExistEmailException;
 import com.dev2.intern.vo.CreateUserVO;
 import com.dev2.intern.vo.UserVO;
 
@@ -12,20 +11,17 @@ public interface IUserDAO {
 	 * @param createUserVO
 	 * 			유저정보가 담긴 VO. email, password, name 정보가 들어있다.
 	 * @return 정상적으로 끝나면 1, 아니면 0
-	 * @throws ExistEmailException
-	 * 			DB에 이미 저장되어있는 email일 경우 발생
 	 */
-	public int createUser(CreateUserVO createUserVO) throws ExistEmailException;
+	public int createUser(CreateUserVO createUserVO);
 	
 	/**
-	 * email을 가지고 사용중인지 확인하는 함수
+	 * 사용중인 이메일인지 확인하는 함수
 	 * 
 	 * @param email
-	 * 			검색하려고 하는 email
-	 * @throws ExistEmailException
-	 * 			DB에 이미 사용중인 email일 경우 발생
+	 * 			확인하려는 email
+	 * @return 사용죽인 메일이라면 1, 아니면 0
 	 */
-	public void checkExistUser(String email) throws ExistEmailException;
+	public int checkExistUser(String email);
 	
 	/**
 	 * email과 password가 서로 pair인지 확인하는 함수
@@ -57,19 +53,34 @@ public interface IUserDAO {
 	public UserVO getUserByEmail(String email);
 	
 	/**
-	 * email을 가지고 유저를 수정하기 위한 함수
+	 * 유저정보를 수정하기 위한 함수
+	 * 
+	 * @param password
+	 * 			수정할 패스워드
+	 * @param name
+	 * 			수정할 이름
+	 * @param userId
+	 * 			수정할 대상이 되는 유저의 id
+	 * @return 정상적으로 수정되면 1, 아니면 0
+	 */
+	public int modifyUser(String password, String name, int userId);
+	
+	/**
+	 * 유저를 삭제하기 위한 함수
+	 * 실제로 table에 있는 정보를 지우는 것은 아니라, 지워진 유저라는 의미에 데이터로 덮어씌운다.
 	 * 
 	 * @param email
-	 * 			대상이되는 user의 email
-	 * @param password
-	 * 			수정하려고하는 password
-	 * @param name
-	 * 			수정하려고하는 name
-	 * @return 성공적으로 끝나면 1, 아니면 0
+	 * 			삭제하려고 하는 유저의 email
+	 * @return 정상적으로 삭제하면 1, 아니면 0
 	 */
-	public int modifyUser(String email, String password, String name);
-	
 	public int deleteUser(String email);
 	
+	/**
+	 * 삭제된 유저를 trash에 저장하기 위한 함수
+	 * 
+	 * @param email
+	 * 			이동시키려는 유저의 email
+	 * @return 정상적으로 옮겨지면 1, 아니면 0
+	 */
 	public int gotoTrash(String email);
 }

@@ -110,7 +110,7 @@ public class ModelAndViewController {
 						@PathVariable("pageNumber") String pageNumber) {
 		log.info("{} board page load", boardNumber);
 		ModelAndView modelAndView = new ModelAndView("board");
-//		log.info("{} is log in", principal.getName());
+
 		modelAndView.addObject("pageCount", postService.countPageNumber(boardNumber));
 		modelAndView.addObject("postList", postService.listUpPost(boardNumber, pageNumber));
 
