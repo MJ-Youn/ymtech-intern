@@ -13,4 +13,5 @@ public interface IUserService {
 	
 	public int modifyUser(String email, ModifyUserVO modifyUserVO);
 	
+	public int deleteUser(String email);
 }

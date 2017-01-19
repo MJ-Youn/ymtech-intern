@@ -1,0 +1,87 @@
+@CHARSET "UTF-8";
+
+#admin_lnb {
+    position: fixed;
+    display: inline-block;
+    background-color: gray;
+    width: 300px;
+    height: calc(100% + 16px);
+    margin: -8px 0 0 -8px;
+    float: left;
+}
+
+#home_title {
+    background-image: url(/img/logo.png);
+    background-color: #e4e4e4;
+    background-size: cover;
+    display: inline-block;
+    width: 300px;
+    height: 161px;
+    cursor: pointer;
+}
+
+#menu_list li {
+	color: white;
+    margin: 10px 0;
+    cursor: pointer;
+    font-size: 18px;
+}
+
+#menu_list li.active {
+	font-weight: bold;
+	font-size: 20px;
+}
+
+#menu_list {
+    list-style-type: none;
+    padding: 0;
+    margin: 15px 0 0 15px;
+}
+
+#exit {
+    background-image: url(/img/exit.png);
+    background-size: cover;
+    width: 45px;
+    height: 40px;
+    position: absolute;
+    bottom: 25px;
+    left: 25px;
+    cursor: pointer;
+}
+
+#admin_body {
+    display: inline-block;
+    width: calc(100% - 300px);
+    height: 100%;
+   	margin: 0 0 150px 300px;
+}
+
+#menu_title {
+   	margin: 160px 0 30px 30px;
+    border-collapse: collapse;
+}
+
+#list {
+    width: calc(100% - 28px);
+    margin: 10px 0 0 18px;
+}
+
+#list th {
+	background-color: #cec4c4;
+}
+
+#list tr:nth-child(odd) {
+    background-color: #d8e8ef;
+}
+
+#list tr:nth-child(even) {
+	background-color: #efefef;
+}
+
+#list .delete {
+    background-image: url(/img/delete.ico);
+    background-size: 20px;
+    background-repeat: no-repeat;
+    background-position: center center;
+    cursor: pointer;
+}

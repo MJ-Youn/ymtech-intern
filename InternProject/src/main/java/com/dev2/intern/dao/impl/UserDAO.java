@@ -71,4 +71,19 @@ public class UserDAO extends GenericDAO implements IUserDAO {
 		
 		return jdbcTemplate.update(query, password, name, userId);
 	}
+
+	@Override
+	public int deleteUser(String email) {
+		String query = getQuery("user.deleteUser");
+		gotoTrash(email);
+		
+		return jdbcTemplate.update(query, email);
+	}
+	
+	@Override
+	public int gotoTrash(String email) {
+		String query = getQuery("user.gotoTrash");
+		
+		return jdbcTemplate.update(query, email);
+	}
 }

@@ -15,4 +15,5 @@ public abstract class GenericDAO {
 	public String getQuery(String name) {
 		return querySource.getMessage(name, null, null);
 	}
+
 }

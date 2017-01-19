@@ -45,7 +45,7 @@
 									<div class="form_status"></div>
 								</c:when>
 								<c:otherwise>
-									<div>${user.email }</div>
+									<div id="user_email">${user.email }</div>
 								</c:otherwise>
 								</c:choose>
 							</td>
@@ -66,10 +66,15 @@
 					
 					<c:choose>
 					<c:when test="${empty user }">
-						<div id="signup_button">회원가입</div>
+						<div id="signup_button" class="page_button">회원가입</div>
+					</c:when>
+					<c:when test="${user.level eq 9 }">
+						<div id="modify_button" class="page_button">정보수정</div>
+						<div id="admin_page" class="page_button">사이트 관리</div>
 					</c:when>
 					<c:otherwise>
-						<div id="modify_button">정보수정</div>
+						<div id="modify_button" class="page_button">정보수정</div>
+						<div id="delete_button" class="page_button">회원탈퇴</div>
 					</c:otherwise>
 					</c:choose>
 				</div>

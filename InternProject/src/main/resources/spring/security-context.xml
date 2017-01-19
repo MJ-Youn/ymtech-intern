@@ -19,9 +19,10 @@
 		<intercept-url pattern="/signup/"			access="permitAll" />
 		<intercept-url pattern="/logout"			access="isAuthenticated()" />
 		<intercept-url pattern="/logout/"			access="isAuthenticated()" />
+		<intercept-url pattern="/comment"			access="isAuthenticated()" />
+		<intercept-url pattern="/comment/"			access="isAuthenticated()" />
 		<intercept-url pattern="/user"				access="isAuthenticated()" />
 		<intercept-url pattern="/user/"				access="isAuthenticated()" />
-		<intercept-url pattern="/user/**"			access="isAuthenticated()" />
 		<intercept-url pattern="/board/1/write/"	access="hasRole('ROLE_SUPER_ADMIN')" />
 		<intercept-url pattern="/board/1/write"		access="hasRole('ROLE_SUPER_ADMIN')" />
 		<intercept-url pattern="/board/1/**"		access="permitAll" />

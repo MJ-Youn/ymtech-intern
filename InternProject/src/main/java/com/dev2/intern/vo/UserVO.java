@@ -11,4 +11,5 @@ public class UserVO {
 	private String password;
 	private String name;
 	private int level;
+	private int isDeleted;
 }

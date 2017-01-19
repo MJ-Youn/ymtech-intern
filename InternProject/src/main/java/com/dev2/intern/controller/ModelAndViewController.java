@@ -3,6 +3,7 @@ package com.dev2.intern.controller;
 import java.io.File;
 import java.io.IOException;
 import java.net.URLEncoder;
+import java.util.ArrayList;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
@@ -17,10 +18,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.dev2.intern.exception.ExistEmailException;
+import com.dev2.intern.service.impl.AdminService;
 import com.dev2.intern.service.impl.BoardService;
 import com.dev2.intern.service.impl.CommentService;
 import com.dev2.intern.service.impl.FileService;
@@ -29,11 +32,13 @@ import com.dev2.intern.service.impl.UserService;
 import com.dev2.intern.util.HashMapUtil;
 import com.dev2.intern.util.ResponseHeaderUtil;
 import com.dev2.intern.util.UserGradeUtil;
+import com.dev2.intern.vo.CommentVO;
 import com.dev2.intern.vo.CreateUserVO;
 import com.dev2.intern.vo.FileVO;
 import com.dev2.intern.vo.ModifyCommentVO;
 import com.dev2.intern.vo.ModifyPostVO;
 import com.dev2.intern.vo.ModifyUserVO;
+import com.dev2.intern.vo.PostVO;
 import com.dev2.intern.vo.ResponseVO;
 import com.dev2.intern.vo.UserVO;
 import com.dev2.intern.vo.WriteCommentVO;
@@ -67,6 +72,10 @@ public class ModelAndViewController {
 	@Autowired
 	@Qualifier(UserService.BEAN_QUALIFIER)
 	private UserService userService;
+	
+	@Autowired
+	@Qualifier(AdminService.BEAN_QUALIFIER)
+	private AdminService adminService;
 	
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String index() {
@@ -161,6 +170,13 @@ public class ModelAndViewController {
 		modelAndView.addObject("user", userService.getUserByEmail(email));
 		
 		return modelAndView;
+	}
+	
+	@RequestMapping(value = "/admin", method = RequestMethod.GET)
+	public String adminPage() {
+		log.info("welcome to admin page");
+		
+		return "admin";
 	}
 	
 	@RequestMapping(value = "/post", method = RequestMethod.POST)
@@ -276,4 +292,115 @@ public class ModelAndViewController {
 		
 		return SUCCESS_RESPONSE;
 	}
+	
+	@RequestMapping(value= "/user", method = RequestMethod.DELETE)
+	@ResponseBody
+	public ResponseVO deleteUser() {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		String email = auth.getName();
+		
+		userService.deleteUser(email);
+		
+		return SUCCESS_RESPONSE;
+	}
+	
+	@RequestMapping(value = "/admin/table/{tableName}", method = RequestMethod.GET)
+	@ResponseBody
+	public <T> ResponseVO getTableData(@PathVariable("tableName") String tableName) {
+		ArrayList<T> tableData = adminService.getDBData(tableName);
+		
+		return SUCCESS_RESPONSE.setBody(tableData);
+	}
+	
+	@RequestMapping(value = "/admin/table/post", method = RequestMethod.DELETE)
+	@ResponseBody
+	public ResponseVO deletePostTableData(@RequestBody PostVO postVO) {
+		String tableName = "post";
+		log.info("ADMIN: data is deleted in {} ", tableName);
+		adminService.deleteDBData(tableName, postVO);
+		
+		return SUCCESS_RESPONSE;
+	}
+	
+	@RequestMapping(value = "/admin/table/file", method = RequestMethod.DELETE)
+	@ResponseBody
+	public ResponseVO deleteFileTableData(@RequestBody FileVO fileVO) {
+		String tableName = "file";
+		log.info("ADMIN: data is deleted in {} ", tableName);
+		adminService.deleteDBData(tableName, fileVO);
+		
+		return SUCCESS_RESPONSE;
+	}
+	
+	@RequestMapping(value = "/admin/table/comment", method = RequestMethod.DELETE)
+	@ResponseBody
+	public ResponseVO deleteCommentTableData(@RequestBody CommentVO commentVO) {
+		String tableName = "comment";
+		log.info("ADMIN: data is deleted in {} ", tableName);
+		adminService.deleteDBData(tableName, commentVO);
+		
+		return SUCCESS_RESPONSE;
+	}
+	
+	@RequestMapping(value = "/admin/table/user", method = RequestMethod.DELETE)
+	@ResponseBody
+	public ResponseVO deleteUserTableData(@RequestBody UserVO userVO) {
+		String tableName = "user";
+		log.info("ADMIN: data is deleted in {} ", tableName);
+		adminService.deleteDBData(tableName, userVO);
+		
+		return SUCCESS_RESPONSE;
+	}
+	
+	@RequestMapping(value = "/admin/table/trash_post", method = RequestMethod.DELETE)
+	@ResponseBody
+	public ResponseVO deleteTrashPostTableData(@RequestBody PostVO postVO) {
+		String tableName = "trash_post";
+		log.info("ADMIN: data is deleted in {} ", tableName);
+		adminService.deleteDBData(tableName, postVO);
+		
+		return SUCCESS_RESPONSE;
+	}
+	
+	@RequestMapping(value = "/admin/table/trash_file", method = RequestMethod.DELETE)
+	@ResponseBody
+	public ResponseVO deleteTrashFileTableData(@RequestBody FileVO fileVO) {
+		String tableName = "trash_file";
+		log.info("ADMIN: data is deleted in {} ", tableName);
+		adminService.deleteDBData(tableName, fileVO);
+		
+		return SUCCESS_RESPONSE;
+	}
+	
+	@RequestMapping(value = "/admin/table/trash_comment", method = RequestMethod.DELETE)
+	@ResponseBody
+	public ResponseVO deleteTrashCommentTableData(@RequestBody CommentVO commentVO) {
+		String tableName = "trash_comment";
+		log.info("ADMIN: data is deleted in {} ", tableName);
+		adminService.deleteDBData(tableName, commentVO);
+		
+		return SUCCESS_RESPONSE;
+	}
+	
+	@RequestMapping(value = "/admin/table/trash_user", method = RequestMethod.DELETE)
+	@ResponseBody
+	public ResponseVO deleteTrashUserTableData(@RequestBody UserVO userVO) {
+		String tableName = "trash_user";
+		log.info("ADMIN: data is deleted in {} ", tableName);
+		adminService.deleteDBData(tableName, userVO);
+		
+		return SUCCESS_RESPONSE;
+	}
+	
+	@RequestMapping(value = "/admin/user/level", method = RequestMethod.PATCH)
+	@ResponseBody
+	public ResponseVO modifyUserLevel(@RequestBody Map<Object, Object> map) {
+		log.info("ADMIN: user {} level is modified");
+		String userId = (String)map.get("userId");
+		String level = (String)map.get("level");
+		adminService.modifyUserLevel(userId, level);
+		
+		return SUCCESS_RESPONSE;
+	}
+	
 }

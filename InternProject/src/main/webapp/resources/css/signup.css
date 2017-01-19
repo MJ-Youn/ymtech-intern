@@ -2,6 +2,7 @@
 
 #signup_frame {
 	padding: 50px 200px;
+    text-align: center;
 }
 
 .signup_table {
@@ -43,28 +44,25 @@
 	width: 25px;
 }
 
-#signup_button {
-	background-color: #DC0000;
-	border-radius: 4px;
-	text-align: center;
-	height: 50px;
-	width: 145px;
-    margin: 20px auto;
-	color: white;
-	font-size: 30px;
-	font-weight: bold;
-	cursor: pointer;
+#user_email {
+	margin-left: 20px;
+    font-weight: bold;
 }
 
-#modify_button {
+.page_button {
 	background-color: #DC0000;
 	border-radius: 4px;
 	text-align: center;
+	display: inline-block;
 	height: 50px;
 	width: 145px;
-    margin: 20px auto;
+    margin: 20px;
 	color: white;
 	font-size: 30px;
 	font-weight: bold;
 	cursor: pointer;
+} 
+
+#admin_page {
+	width: 190px;
 }

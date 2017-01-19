@@ -68,4 +68,8 @@ public interface IUserDAO {
 	 * @return 성공적으로 끝나면 1, 아니면 0
 	 */
 	public int modifyUser(String email, String password, String name);
+	
+	public int deleteUser(String email);
+	
+	public int gotoTrash(String email);
 }

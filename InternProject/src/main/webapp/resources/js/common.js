@@ -15,6 +15,7 @@ var LOGIN_ROOT = "/login/";
 var SIGNUP_ROOT = "/signup/";
 var LOGOUT_ROOT = "/logout/";
 var USER_ROOT = "/user/";
+var ADMIN_ROOT = "/admin/"
 
 var NEW_BOARD_LIST_ELEMENT = "<li class='board_tab'></li>";
 var NEW_PAGINATION_LIST_ELEMENT = "<li class='page_number'></li>";
@@ -31,6 +32,8 @@ var MODAL_POSTING_CANCEL_CONTENTS = "작성했던 내용은 저장되지 않습�
 var MODAL_POSTING_UNVALID_TITLE = "제목을 입력하세요.";
 var MODAL_POSTING_UNVALID_CONTENTS = "내용을 입력하세요.";
 
+var MODAL_UNVALID_GRADE = "요청하신 동작의 권한이 없습니다.";
+
 var MODAL_DELETE_CONFIRM_CONTENTS = "삭제하시겠습니까?";
 
 var MODAL_SIGNUP_INVALID_EMAIL = "메일이 올바르지 않습니다.";
@@ -44,6 +47,9 @@ var MODAL_LOGIN_INVALID_PASSWORD = "올바른 패스워드를 입력해주세요
 var MODAL_LOGIN_FAIL_CONTENTS = "로그인 정보가 맞지 않습니다.";
 
 var MODAL_USER_MODIFY_CONTENTS = "개인정보 수정이 완료되었습니다.";
+
+var MODAL_UESR_DELETE_CONTENTS = "회원탈퇴 하시겠습니까?";
+var MODAL_USER_DELETE_CONFIRM = "정상적으로 탈퇴되었씁니다.";
 
 var MODAL_BUTTON_OK = "확인";
 var MODAL_BUTTON_CANCEL = "취소";
@@ -121,7 +127,9 @@ function callAjax(type, url, data, callbackfunction) {
             });
         },
 		success: function(data) {
-			if (data.header.resultCode === 200) {
+			if (data.header === undefined) {
+				viewConfirmModal(MODAL_CONFIRM_TITLE, MODAL_UNVALID_GRADE);
+			}else if (data.header.resultCode === 200) {
 				callbackfunction.call(this, data);
 			} else {
 				viewConfirmModal(MODAL_CONFIRM_TITLE, data.header.resultMessage);

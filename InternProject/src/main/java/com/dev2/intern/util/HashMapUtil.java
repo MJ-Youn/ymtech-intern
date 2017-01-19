@@ -18,4 +18,5 @@ public class HashMapUtil {
 	public static void addMap(Map<Object, Object> map, Object key, Object value) {
 		map.put(key, value);
 	}
+	
 }

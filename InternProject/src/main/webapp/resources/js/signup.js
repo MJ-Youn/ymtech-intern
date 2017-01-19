@@ -27,6 +27,14 @@ $(document).ready(function() {
 	$("#modify_button").click(function() {
 		modify();
 	});
+	
+	$("#delete_button").click(function() {
+		deleteUser();
+	});
+	
+	$("#admin_page").click(function() {
+		$(location).attr("href", ADMIN_ROOT);
+	});
 });
 
 function checkValidEmail() {
@@ -112,4 +120,14 @@ function modify() {
 			});
 		});
 	}
+}
+
+function deleteUser() {
+	viewPromptModal(MODAL_CONFIRM_TITLE, MODAL_UESR_DELETE_CONTENTS, function() {
+		callAjax("DELETE", USER_ROOT, null, function() {
+			viewConfirmModal(MODAL_CONFIRM_TITLE, MODAL_USER_DELETE_CONFIRM, function() {
+				document.logout.submit();
+			});
+		});
+	});
 }

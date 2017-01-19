@@ -34,4 +34,9 @@ public class UserService implements IUserService {
 	public int modifyUser(String email, ModifyUserVO modifyUserVO) {
 		return userDAO.modifyUser(email, modifyUserVO.getPassword(), modifyUserVO.getName());
 	}
+
+	@Override
+	public int deleteUser(String email) {
+		return userDAO.deleteUser(email);
+	}
 }
