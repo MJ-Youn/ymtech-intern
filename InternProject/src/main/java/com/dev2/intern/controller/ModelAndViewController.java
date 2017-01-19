@@ -312,82 +312,12 @@ public class ModelAndViewController {
 		return SUCCESS_RESPONSE.setBody(tableData);
 	}
 	
-	@RequestMapping(value = "/admin/table/post", method = RequestMethod.DELETE)
+	@RequestMapping(value = "/admin/table/{tableName}", method = RequestMethod.DELETE)
 	@ResponseBody
-	public ResponseVO deletePostTableData(@RequestBody PostVO postVO) {
-		String tableName = "post";
+	public ResponseVO deleteTableData(@PathVariable("tableName") String tableName,
+										@RequestBody Map<?, ?> map) {
 		log.info("ADMIN: data is deleted in {} ", tableName);
-		adminService.deleteDBData(tableName, postVO);
-		
-		return SUCCESS_RESPONSE;
-	}
-	
-	@RequestMapping(value = "/admin/table/file", method = RequestMethod.DELETE)
-	@ResponseBody
-	public ResponseVO deleteFileTableData(@RequestBody FileVO fileVO) {
-		String tableName = "file";
-		log.info("ADMIN: data is deleted in {} ", tableName);
-		adminService.deleteDBData(tableName, fileVO);
-		
-		return SUCCESS_RESPONSE;
-	}
-	
-	@RequestMapping(value = "/admin/table/comment", method = RequestMethod.DELETE)
-	@ResponseBody
-	public ResponseVO deleteCommentTableData(@RequestBody CommentVO commentVO) {
-		String tableName = "comment";
-		log.info("ADMIN: data is deleted in {} ", tableName);
-		adminService.deleteDBData(tableName, commentVO);
-		
-		return SUCCESS_RESPONSE;
-	}
-	
-	@RequestMapping(value = "/admin/table/user", method = RequestMethod.DELETE)
-	@ResponseBody
-	public ResponseVO deleteUserTableData(@RequestBody UserVO userVO) {
-		String tableName = "user";
-		log.info("ADMIN: data is deleted in {} ", tableName);
-		adminService.deleteDBData(tableName, userVO);
-		
-		return SUCCESS_RESPONSE;
-	}
-	
-	@RequestMapping(value = "/admin/table/trash_post", method = RequestMethod.DELETE)
-	@ResponseBody
-	public ResponseVO deleteTrashPostTableData(@RequestBody PostVO postVO) {
-		String tableName = "trash_post";
-		log.info("ADMIN: data is deleted in {} ", tableName);
-		adminService.deleteDBData(tableName, postVO);
-		
-		return SUCCESS_RESPONSE;
-	}
-	
-	@RequestMapping(value = "/admin/table/trash_file", method = RequestMethod.DELETE)
-	@ResponseBody
-	public ResponseVO deleteTrashFileTableData(@RequestBody FileVO fileVO) {
-		String tableName = "trash_file";
-		log.info("ADMIN: data is deleted in {} ", tableName);
-		adminService.deleteDBData(tableName, fileVO);
-		
-		return SUCCESS_RESPONSE;
-	}
-	
-	@RequestMapping(value = "/admin/table/trash_comment", method = RequestMethod.DELETE)
-	@ResponseBody
-	public ResponseVO deleteTrashCommentTableData(@RequestBody CommentVO commentVO) {
-		String tableName = "trash_comment";
-		log.info("ADMIN: data is deleted in {} ", tableName);
-		adminService.deleteDBData(tableName, commentVO);
-		
-		return SUCCESS_RESPONSE;
-	}
-	
-	@RequestMapping(value = "/admin/table/trash_user", method = RequestMethod.DELETE)
-	@ResponseBody
-	public ResponseVO deleteTrashUserTableData(@RequestBody UserVO userVO) {
-		String tableName = "trash_user";
-		log.info("ADMIN: data is deleted in {} ", tableName);
-		adminService.deleteDBData(tableName, userVO);
+		adminService.deleteDBData(tableName, map);
 		
 		return SUCCESS_RESPONSE;
 	}

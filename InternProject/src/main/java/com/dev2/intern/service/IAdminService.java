@@ -1,6 +1,7 @@
 package com.dev2.intern.service;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 public interface IAdminService {
 	
@@ -24,7 +25,7 @@ public interface IAdminService {
 	 * 			삭제하려는 데이터의 정보
 	 * @return 정상적으로 삭제가 되면 1, 아니면 0
 	 */
-	public int deleteDBData(String tableName, Object object);
+	public int deleteDBData(String tableName, Map<?, ?> object);
 	
 	public int modifyUserLevel(String userId, String level);
 }

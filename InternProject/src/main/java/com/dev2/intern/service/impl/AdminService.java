@@ -1,6 +1,7 @@
 package com.dev2.intern.service.impl;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -12,6 +13,7 @@ import com.dev2.intern.dao.impl.FileDAO;
 import com.dev2.intern.dao.impl.PostDAO;
 import com.dev2.intern.dao.impl.UserDAO;
 import com.dev2.intern.service.IAdminService;
+import com.dev2.intern.util.HashMapUtil;
 import com.dev2.intern.vo.CommentVO;
 import com.dev2.intern.vo.FileVO;
 import com.dev2.intern.vo.PostVO;
@@ -76,27 +78,32 @@ public class AdminService implements IAdminService {
 	}
 
 	@Override
-	public int deleteDBData(String tableName, Object object) {
+	public int deleteDBData(String tableName, Map<?, ?> map) {
+		
 		if (TABLE_POST.equals(tableName)) {
-			int postId = ((PostVO)object).getId();
-			return postDAO.deletePost(postId);
+			PostVO postVO = (PostVO)HashMapUtil.mapConvertToVO(map, PostVO.class);
+			return postDAO.deletePost(postVO.getId());
 		} else if (TABLE_FILE.equals(tableName)) {
-			int postId = ((FileVO)object).getPostId();
-			return fileDAO.deleteFile(postId);
+			FileVO fileVO = (FileVO)HashMapUtil.mapConvertToVO(map, FileVO.class);
+			return fileDAO.deleteFile(fileVO.getPostId());
 		} else if (TABLE_COMMENT.equals(tableName)) {
-			int commentId = ((CommentVO)object).getId();
-			return commentDAO.deleteComment(commentId);
+			CommentVO commentVO = (CommentVO)HashMapUtil.mapConvertToVO(map, CommentVO.class);
+			return commentDAO.deleteComment(commentVO.getId());
 		} else if (TABLE_USER.equals(tableName)) {
-			String email = ((UserVO)object).getEmail();
-			return userDAO.deleteUser(email);
+			UserVO userVO = (UserVO)HashMapUtil.mapConvertToVO(map, UserVO.class);
+			return userDAO.deleteUser(userVO.getEmail());
 		} else if (TABLE_TRASH_POST.equals(tableName)) {
-			return adminDAO.deleteTrashPost((PostVO)object);
+			PostVO postVO = (PostVO)HashMapUtil.mapConvertToVO(map, PostVO.class);
+			return adminDAO.deleteTrashPost(postVO);
 		} else if (TABLE_TRASH_FILE.equals(tableName)) {
-			return adminDAO.deleteTrashFile((FileVO)object);
+			FileVO fileVO = (FileVO)HashMapUtil.mapConvertToVO(map, FileVO.class);
+			return adminDAO.deleteTrashFile(fileVO);
 		} else if (TABLE_TRASH_COMMENT.equals(tableName)) {
-			return adminDAO.deleteTrashComment((CommentVO)object);
+			CommentVO commentVO = (CommentVO)HashMapUtil.mapConvertToVO(map, CommentVO.class);
+			return adminDAO.deleteTrashComment(commentVO);
 		} else if (TABLE_TRASH_USER.equals(tableName)) {
-			return adminDAO.deleteTrashUser((UserVO)object);
+			UserVO userVO = (UserVO)HashMapUtil.mapConvertToVO(map, UserVO.class);
+			return adminDAO.deleteTrashUser(userVO);
 		}
 		
 		return 0;
