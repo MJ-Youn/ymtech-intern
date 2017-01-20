@@ -26,18 +26,20 @@ $(document).ready(function() {
 	});
 	
 	$(document).on("click", ".delete", function(){ 
-		var parent = $(this).parent();
-		var children = parent.children(":not(.delete)");
-		
-		var data = {};
-		
-		for (var i = 0 ; i < children.length ; i++) {
-			data[children[i].className] = children[i].innerHTML;
+		if (cofirm("삭제하시겠습니까?")) {
+			var parent = $(this).parent();
+			var children = parent.children(":not(.delete)");
+			
+			var data = {};
+			
+			for (var i = 0 ; i < children.length ; i++) {
+				data[children[i].className] = children[i].innerHTML;
+			}
+			
+			callAjax("DELETE", TABLE_DATA_URL + tableName, data, function(data) {
+				getTableData();
+			});
 		}
-		
-		callAjax("DELETE", TABLE_DATA_URL + tableName, data, function(data) {
-			getTableData();
-		});
 	});
 	
 	$(document).on("keypress", ".level", function(event) {
@@ -53,6 +55,8 @@ $(document).ready(function() {
 				},function(data) {
 					getTableData();
 				});
+			} else {
+				alert("0, 1, 9중에 입력해주세요.");
 			}
 		}
 	});

@@ -3,8 +3,6 @@ package com.dev2.intern.util;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
-import java.security.Timestamp;
-import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -30,9 +28,7 @@ public class HashMapUtil {
 	}
 	
 	public static Object mapConvertToVO(Map<?, ?> srcMap, Class<?> targetClass) {
-		
 		Object targetObject = null;
-		
 		Field targetField = null;
 		boolean targetAccessible = false;
 		
@@ -40,8 +36,8 @@ public class HashMapUtil {
 			Constructor<?> cons = targetClass.getConstructor();
 			targetObject = cons.newInstance();
 			
-			Set<?> key = srcMap.keySet();
-			Iterator<?> iterator = key.iterator();
+			Set<?> keys = srcMap.keySet();
+			Iterator<?> iterator = keys.iterator();
 			
 			Field[] fields = targetClass.getDeclaredFields();
 			List<String> fieldNames = getNameListByFields(fields);
@@ -75,9 +71,7 @@ public class HashMapUtil {
 						}
 					}
 				}
-				
 			}
-			
 		} catch (NoSuchMethodException | SecurityException | InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
 			e.printStackTrace();
 		}
